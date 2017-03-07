@@ -1,3 +1,4 @@
+package app.calculus;
 
 public class DoubleNumber extends GenericNumber<Double>
 {

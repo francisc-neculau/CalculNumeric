@@ -1,3 +1,4 @@
+package app.calculus;
 
 public abstract class GenericNumber<T extends Number>
 {

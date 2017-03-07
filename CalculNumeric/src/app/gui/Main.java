@@ -1,3 +1,8 @@
+package app.gui;
+
+import app.calculus.DoubleNumber;
+import app.calculus.GenericNumber;
+
 public class Main
 {
 
