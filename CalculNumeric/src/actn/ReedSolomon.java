@@ -1,6 +1,7 @@
 package actn;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
@@ -83,6 +84,35 @@ public class ReedSolomon
 		return result;
 	}
 
+	public List<BigInteger> laGrangeInterpolation(Polynomial z, BigInteger [] indicies)
+	{
+		Polynomial sumationPolynomial = Polynomial.X0_0;
+		Polynomial productPolynomial  = Polynomial.X0_1;
+		
+		Polynomial intermidiateProductPolynomial = null;
+
+		for (int i = 0; i < indicies.length; i++)
+		{
+			productPolynomial = Polynomial.X0_1;
+			intermidiateProductPolynomial = Polynomial.X1_0;
+			for (int j = 0; j < indicies.length; j++)
+			{
+				if(i == j)
+					continue;
+				intermidiateProductPolynomial = intermidiateProductPolynomial.subtract(indicies[j]);
+				intermidiateProductPolynomial = intermidiateProductPolynomial.divide(indicies[i].subtract(indicies[j]));
+				productPolynomial.multiply(intermidiateProductPolynomial);
+			}
+			sumationPolynomial = sumationPolynomial.add(productPolynomial.multiply(z.getCoeficientAt(indicies[i])));
+		}
+		List<BigInteger> coeficients = new ArrayList<>();
+		for (BigInteger bigInteger : sumationPolynomial.getCoeficients())
+		{
+			coeficients.add(bigInteger.mod(new BigInteger("11")));
+		}
+		return coeficients;
+	}
+	
 	public BigInteger computeFreeCoeficient(List<BigInteger> A, BigInteger base)
 	{
 		BigInteger freeCoeficient      = BigInteger.ZERO;
