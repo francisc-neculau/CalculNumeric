@@ -116,14 +116,14 @@ public class Main
 		 */
 		
 		ReedSolomon rs = new ReedSolomon();
-		BigInteger prime = new BigInteger("11");
+		BigInteger prime = new BigInteger("5");
 		int message = 29;
-		int k = 3;
-
+		int k = 4;
+		// for prime 5, m 29 and k 3 the k is too low !
 		Polynomial Y = rs.encode(message, prime, k);
 		System.out.println("encoded : " + Y.toVectorString());
 		
-		Polynomial Z = Y.setCoefficient(new BigInteger("4"), new BigInteger("7987"));
+		Polynomial Z = Y.setCoefficient(new BigInteger("1"), new BigInteger("41"));
 		System.out.println("corrupt : " + Z.toVectorString());
 
 //		BigInteger [] A = new BigInteger [] {new BigInteger("1"), new BigInteger("3"), new BigInteger("4")};
