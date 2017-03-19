@@ -1,4 +1,4 @@
-package actn;
+package app.arithmetic.model.expression;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class Polynomial
 	
 	public Polynomial(List<BigInteger> coefficients)
 	{
-		this.coefficients = coefficients; // FIXME : Should discard 0 high consecutive coefficients and emit a warning with logger
+		this.coefficients = coefficients; // FIXME : Should discard 0 high coeficients and emit a warning with logger
 	}
 	
 	/*
@@ -133,6 +133,7 @@ public class Polynomial
 
 		for (int i = 0; i < this.coefficients.size(); i++)
 			coeficients.add(this.coefficients.get(i).mod(number));
+		
 		result = new Polynomial(coeficients);
 
 		return result;
