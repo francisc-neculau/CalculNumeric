@@ -1,4 +1,4 @@
-package app.arithmetic.algorithm;
+package actn;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -8,8 +8,6 @@ import java.util.Set;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-
-import app.arithmetic.model.expression.Polynomial;
 
 public class ReedSolomon
 {
@@ -81,6 +79,7 @@ public class ReedSolomon
 	
 	public Polynomial decode(Polynomial Z, BigInteger prime, int k)
 	{
+		logger.info("decode - computing set A");
 		BigInteger [] indicies = new BigInteger [Z.getDegree() - 2];
 		{
 			int index = 0;
@@ -95,16 +94,15 @@ public class ReedSolomon
 					index += 1;
 				}
 				if(computeFreeCoeficient(Z, indicies, prime).compareTo(BigInteger.ZERO) == 0)
-					break;
+					break; // FIXME : If no fc exists, what to do ?
 			}
 		}
 		BigInteger [] A = new BigInteger[k];
 		for (int i = 0; i < k; i++)
-		{
 			A[i] = indicies[i];
-			
-		}
+		logger.info("decode - computing set A finished : " + A);
 		Polynomial decoded;
+		logger.info("decode - LaGrange Interpolation");
 		decoded = fastLaGrangeInterpolation(Z, A, prime);
 		return decoded;
 	}
