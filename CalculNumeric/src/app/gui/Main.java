@@ -1,13 +1,57 @@
 package app.gui;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+
+import app.arithmetic.model.EpsilonPrecision;
+import app.arithmetic.model.matrix.mutable.CholeskyMatrix;
 
 public class Main
 {
 
 	public static void main(String[] args)
 	{
+//		BigDecimal[][] values = new BigDecimal[4][4];
+//		values[0][0] = new BigDecimal("18"); values[0][1] = new BigDecimal("22"); values[0][2] = new BigDecimal("54");  values[0][3] = new BigDecimal("42");
+//		                                     values[1][1] = new BigDecimal("70"); values[1][2] = new BigDecimal("86");  values[1][3] = new BigDecimal("62");
+//		                                                                          values[2][2] = new BigDecimal("174"); values[2][3] = new BigDecimal("134");
+//		                                                                                                                values[3][3] = new BigDecimal("106");
+//        CholeskyMatrix A = new CholeskyMatrix(4, values, new EpsilonPrecision(9));
+		
+		BigDecimal[][] values = new BigDecimal[3][3];
+		values[0][0] = new BigDecimal("25"); values[0][1] = new BigDecimal("15"); values[0][2] = new BigDecimal("-5");
+		                                     values[1][1] = new BigDecimal("18"); values[1][2] = new BigDecimal("0");
+		                                                                          values[2][2] = new BigDecimal("11");
+        CholeskyMatrix A = new CholeskyMatrix(3, values, new EpsilonPrecision(9));
+		
+//		BigDecimal[][] values = new BigDecimal[3][3];
+//		values[0][0] = new BigDecimal("1"); values[0][1] = new BigDecimal("2.5");  values[0][2] = new BigDecimal("3");
+//		                                    values[1][1] = new BigDecimal("8.25"); values[1][2] = new BigDecimal("15.5");
+//		                                                                           values[2][2] = new BigDecimal("43");
+//        CholeskyMatrix A = new CholeskyMatrix(3, values, new EpsilonPrecision(9));
+		/*
+		 *  Sa se calculeze, o descompunere LDLT(descompunerea/factorizarea Choleski) a matricii A (A = LDLT ), 
+		 *  unde L este matrice inferior triunghiulara cu toate elementele de pe diagonala pricipala egale cu 1 iar
+		 *  D este matrice diagonala;
+		 */
+		A.decompose();
+		System.out.println(A.printA());
+		System.out.println(A.printD());
+		System.out.println(A.printL());
+		/*
+		 * Folosind aceasta descompunere, sa se calculeze determinantul matricii A 
+		 * (det A = det L det D det LT ) ;
+		 */
+		//A.determinant();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//Tema1<DoubleNumber> tema = new Tema1<DoubleNumber>();
 		//tema.start2();
 		BigDecimal b1 = new BigDecimal("3");

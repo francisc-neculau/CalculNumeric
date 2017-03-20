@@ -1,4 +1,4 @@
-package actn;
+package app.arithmetic.model.expression;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

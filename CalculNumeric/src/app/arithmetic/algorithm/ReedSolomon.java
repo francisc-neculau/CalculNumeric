@@ -1,4 +1,5 @@
-package actn;
+package app.arithmetic.algorithm;
+
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.Set;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+
+import app.arithmetic.model.expression.Polynomial;
 
 public class ReedSolomon
 {

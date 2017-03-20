@@ -25,4 +25,10 @@ public class EpsilonPrecision
 	{
 		return exponent;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.valueOf(exponent);
+	}
 }

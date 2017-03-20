@@ -19,9 +19,9 @@ public abstract class Matrix implements Addable, Subtractable, Multipliable
 	}
 	
 	/**
-	 * This method is used for compution the
+	 * This method is used for computing the
 	 * solution of the system A*X = B
-	 * A is this, X and B are the other matricies
+	 * A is this, X and B are the other matrices
 	 */
 	public abstract Matrix solve(Matrix B);
 
@@ -43,7 +43,7 @@ public abstract class Matrix implements Addable, Subtractable, Multipliable
 	 * @param matrix
 	 * @return
 	 */
-	public abstract BigDecimal Aij(BigInteger rowIndex, BigInteger columnIndex);
+	public abstract BigDecimal ij(BigInteger rowIndex, BigInteger columnIndex);
 	
 	public boolean canAdd(Matrix matrix)
 	{
