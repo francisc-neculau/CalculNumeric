@@ -1,15 +1,42 @@
 package app.gui;
 
-import java.math.BigDecimal;
-
-import app.arithmetic.model.EpsilonPrecision;
-import app.arithmetic.model.matrix.mutable.CholeskyMatrix;
+import app.arithmetic.algorithm.CholeskyDecomposition;
+import app.arithmetic.model.matrix.type.MutableMatrix;
+import app.arithmetic.model.matrix.type.square.MirrorMatrix;
 
 public class Main
 {
 
 	public static void main(String[] args)
 	{
+		CholeskyDecomposition cd = new CholeskyDecomposition();
+		Double[][] elements = new Double[3][];
+
+		elements[0] = new Double[1];
+		elements[1] = new Double[2];
+		elements[2] = new Double[3];
+		
+		elements[0][0] = 1.0;
+		
+		elements[1][0] = 2.5;
+		elements[1][1] = 8.25;
+		
+		elements[2][0] = 3.0;
+		elements[2][1] = 15.5;
+		elements[2][2] = 43.0;
+
+		MirrorMatrix A = new MirrorMatrix(3, elements);
+		System.out.println(A);
+
+		MutableMatrix[] result = cd.decompose(A);
+
+		MutableMatrix L = result[0];
+		MutableMatrix D = result[1];
+		
+		System.out.println(L);
+		System.out.println(D);
+
+		
 //		BigDecimal[][] values = new BigDecimal[4][4];
 //		values[0][0] = new BigDecimal("18"); values[0][1] = new BigDecimal("22"); values[0][2] = new BigDecimal("54");  values[0][3] = new BigDecimal("42");
 //		                                     values[1][1] = new BigDecimal("70"); values[1][2] = new BigDecimal("86");  values[1][3] = new BigDecimal("62");
@@ -17,46 +44,54 @@ public class Main
 //		                                                                                                                values[3][3] = new BigDecimal("106");
 //        CholeskyMatrix A = new CholeskyMatrix(4, values, new EpsilonPrecision(9));
 		
-		BigDecimal[][] values = new BigDecimal[3][3];
-		values[0][0] = new BigDecimal("25"); values[0][1] = new BigDecimal("15"); values[0][2] = new BigDecimal("-5");
-		                                     values[1][1] = new BigDecimal("18"); values[1][2] = new BigDecimal("0");
-		                                                                          values[2][2] = new BigDecimal("11");
-        CholeskyMatrix A = new CholeskyMatrix(3, values, new EpsilonPrecision(9));
+//		BigDecimal[][] values = new BigDecimal[3][3];
+//		values[0][0] = new BigDecimal("25"); values[0][1] = new BigDecimal("15"); values[0][2] = new BigDecimal("-5");
+//		                                     values[1][1] = new BigDecimal("18"); values[1][2] = new BigDecimal("0");
+//		                                                                          values[2][2] = new BigDecimal("11");
+//        CholeskyMatrix A = new CholeskyMatrix(3, values, new EpsilonPrecision(9));
 		
 //		BigDecimal[][] values = new BigDecimal[3][3];
 //		values[0][0] = new BigDecimal("1"); values[0][1] = new BigDecimal("2.5");  values[0][2] = new BigDecimal("3");
 //		                                    values[1][1] = new BigDecimal("8.25"); values[1][2] = new BigDecimal("15.5");
-//		                                                                           values[2][2] = new BigDecimal("43");
+//		                                                                 /*6.25*/  values[2][2] = new BigDecimal("43");
 //        CholeskyMatrix A = new CholeskyMatrix(3, values, new EpsilonPrecision(9));
 		/*
 		 *  Sa se calculeze, o descompunere LDLT(descompunerea/factorizarea Choleski) a matricii A (A = LDLT ), 
 		 *  unde L este matrice inferior triunghiulara cu toate elementele de pe diagonala pricipala egale cu 1 iar
 		 *  D este matrice diagonala;
 		 */
-		A.decompose();
-		System.out.println(A.printA());
-		System.out.println(A.printD());
-		System.out.println(A.printL());
+//		A.decompose();
+//		System.out.println(A.printA());
+//		System.out.println(A.printD());
+//		System.out.println(A.printL());
 		/*
 		 * Folosind aceasta descompunere, sa se calculeze determinantul matricii A 
 		 * (det A = det L det D det LT ) ;
 		 */
-		//A.determinant();
+//		A.determinant();
+//		System.out.println(A.getDet());
 		
+		/*
+		 * Utilizand descompunerea Choleski calculata mai sus ¸si metodele substitutiei directe si inverse, 
+		 * sa se calculeze xChol, o solutie aproximativa a sistemului Ax = b;
+		 */
 		
+//		Matrix m = new DiagonalMatrix(2);
+//		MutableMatrix mm = new DiagonalMatrix(2);
+
+		/*
+		 * La tema 1 atentie la POW ~!!!!!!!!!!!!
+		 */
 		
-		
-		
-		
-		
-		
-		
-		
-		//Tema1<DoubleNumber> tema = new Tema1<DoubleNumber>();
-		//tema.start2();
-		BigDecimal b1 = new BigDecimal("3");
-		BigDecimal b2 = new BigDecimal("5");
-		System.out.println(b1.divide(b2));
+//		BigDecimal[][] v = new BigDecimal[2][];
+//		
+//		BigDecimal[] r1 = new BigDecimal[]{new BigDecimal("1")};
+//		BigDecimal[] r2 = new BigDecimal[]{new BigDecimal("2"), new BigDecimal("3")};
+//		
+//		v[0] = r1;
+//		v[1] = r2;
+//		
+//		System.out.println("END");
 	}
 
 }

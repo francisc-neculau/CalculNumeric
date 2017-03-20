@@ -1,4 +1,4 @@
-package app.arithmetic.model.matrix.mutable;
+package app.arithmetic.model.matrix.type.special;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,10 +9,12 @@ public class CholeskyMatrix
 {
 	private BigDecimal [][] A;
 	private BigDecimal [] D;
+	
+	private BigDecimal det;
 	private EpsilonPrecision precision;
 
 	private String padding = "18";
-	
+
 	private int dimension;
 
 	public CholeskyMatrix(int dimension, BigDecimal [][] values, EpsilonPrecision precision)
@@ -27,7 +29,7 @@ public class CholeskyMatrix
 	{
 		return dimension;
 	}
-	
+
 	public void decompose()
 	{
 		BigDecimal dp, dk, aip, app, lip, lpk, lik;
@@ -76,7 +78,6 @@ public class CholeskyMatrix
 					dk = D[k];
 					Sdll = Sdll.add(dk.multiply(lik.multiply(lpk))); /* formula */
 				}
-				
 				A[i][p] = aip.subtract(Sdll).divide(dp, precision.getExponent(), RoundingMode.HALF_UP); /* formula */
 			}
 		}
@@ -85,7 +86,14 @@ public class CholeskyMatrix
 	
 	public void determinant()
 	{
-		
+		det = BigDecimal.ONE;
+		for (int i = 0; i < dimension; i++)
+			det = det.multiply(D[i]);
+	}
+	
+	public BigDecimal getDet()
+	{
+		return det;
 	}
 	
 	public String printA()
