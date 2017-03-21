@@ -37,28 +37,28 @@ public class CholeskyDecomposition
 		
 		for (int p = 0; p < A.getDimension(); p++)
 		{
-			app = A.getIj(p, p);
+			app = A.getEij(p, p);
 			if(p == 0) // ~Special case!~
-				D.setIi(p, app);
+				D.setEii(p, app);
 			
 			Sdl = BigDecimal.ZERO;
 			for (int k = 0; k <= p-1; k++)
 			{
-				lpk = L.getIj(p, k);
-				dk  = D.getIi(k);
+				lpk = L.getEij(p, k);
+				dk  = D.getEii(k);
 				Sdl = Sdl.add(dk.multiply(lpk.multiply(lpk))); // ~Formula!~
 			}
 			dp = app.subtract(Sdl); // ~Formula!~
-			D.setIi(p, dp);
+			D.setEii(p, dp);
 			
 			for (int i = p + 1; i < A.getDimension(); i++)
 			{
-				aip = A.getIj(i, p);
+				aip = A.getEij(i, p);
 				
 				// Special case
 				if(p==0)
 				{
-					L.setIj(i, p, aip);
+					L.setEij(i, p, aip);
 					continue;
 				}
 				//
@@ -69,14 +69,14 @@ public class CholeskyDecomposition
 					if(i == k)
 						lik = BigDecimal.ONE;
 					else
-						lik = A.getIj(i, k);
-					lpk  = A.getIj(p, k);
-					dk   = D.getIi(k);
+						lik = A.getEij(i, k);
+					lpk  = A.getEij(p, k);
+					dk   = D.getEii(k);
 					Sdll = Sdll.add(dk.multiply(lik.multiply(lpk))); // ~Formula!~
 				}
 				// FIXME: Atentie la eroare de impartire aici !
 				lip = aip.subtract(Sdll).divide(dp, precision.getExponent(), RoundingMode.HALF_UP);
-				L.setIj(i, p, lip); // ~Formula!~
+				L.setEij(i, p, lip); // ~Formula!~
 			}
 		}
 

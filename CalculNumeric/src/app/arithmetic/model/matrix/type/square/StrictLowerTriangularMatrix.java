@@ -3,9 +3,9 @@ package app.arithmetic.model.matrix.type.square;
 import java.math.BigDecimal;
 
 import app.arithmetic.model.matrix.Matrix;
-import app.arithmetic.operation.Addable;
-import app.arithmetic.operation.Multipliable;
-import app.arithmetic.operation.Subtractable;
+import app.arithmetic.model.matrix.NormType;
+import app.arithmetic.model.matrix.type.MutableMatrix;
+import app.arithmetic.model.matrix.type.vector.ColumnMatrix;
 
 /**
  * This class models matrices of the following form :
@@ -38,25 +38,82 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 	}
 	
 	@Override
-	public Addable add(Addable number)
+	public Matrix add(Matrix matrix)
 	{return null;}
 
 	@Override
-	public Subtractable subtract(Subtractable number)
+	public Matrix subtract(Matrix matrix)
 	{return null;}
 
 	@Override
-	public Multipliable multiply(Multipliable number)
+	public Matrix multiply(Matrix matrix)
 	{return null;}
 
 	@Override
 	public Matrix solve(Matrix B)
-	{return null;}
+	{
+		// Direct substitution method
+		MutableMatrix X = new ColumnMatrix(super.dimension);
+
+		BigDecimal xi, bi, Saijxj, aii;
+
+		X.setEii(0, B.getEii(0).divide(this.diagonalElement));
+		
+		aii = this.diagonalElement;
+		for(int i = 1; i < super.dimension; i++)
+		{
+			Saijxj = BigDecimal.ZERO;
+			for (int j = 0; j <= i - 1; j++)
+			{
+				Saijxj = Saijxj.add(this.getEij(i, j).multiply(X.getEii(j)));
+			}
+			bi = B.getEii(i);
+			xi = bi.subtract(Saijxj).divide(aii);
+			X.setEii(i, xi);
+		}
+		
+		return X;
+	}
 
 	@Override
-	public void determinant()
+	public BigDecimal norm(NormType normType)
 	{
-		super.determinant = diagonalElement.pow(dimension.intValue());
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Matrix transposeSolve(Matrix B)
+	{
+		// Inverse substitution method
+		MutableMatrix X = new ColumnMatrix(super.dimension);
+
+		BigDecimal xi, bi, Saijxj, aii;
+
+		X.setEii(super.dimension - 1, B.getEii(super.dimension - 1).divide(this.diagonalElement));
+		
+		aii = this.diagonalElement;
+		for(int i = super.dimension - 2; i >= 0; i--)
+		{
+			Saijxj = BigDecimal.ZERO;
+			for (int j = i + 1; j <= super.dimension - 1; j++)
+			{
+				Saijxj = Saijxj.add(this.getEij(j, i).multiply(X.getEii(j)));
+			}
+			bi = B.getEii(i);
+			xi = bi.subtract(Saijxj).divide(aii);
+			X.setEii(i, xi);
+		}
+		
+		return X;
+	}
+	
+	@Override
+	public BigDecimal determinant()
+	{
+		if(super.determinant == null)
+			super.determinant = diagonalElement.equals(BigDecimal.ONE) ? BigDecimal.ONE : diagonalElement.pow(dimension.intValue());
+		return super.determinant;
 	}
 
 	@Override
@@ -64,7 +121,7 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 	{return null;}
 
 	@Override
-	public BigDecimal getIj(Integer rowIndex, Integer columnIndex)
+	public BigDecimal getEij(Integer rowIndex, Integer columnIndex)
 	{
 		if(rowIndex == columnIndex)
 			return diagonalElement;
@@ -78,7 +135,7 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 	}
 
 	@Override
-	public void setIj(Integer rowIndex, Integer columnIndex, BigDecimal value)
+	public void setEij(Integer rowIndex, Integer columnIndex, BigDecimal value)
 	{
 		if(rowIndex == columnIndex || rowIndex < columnIndex)
 			throw new ArrayIndexOutOfBoundsException("Nu-i bine boss");
@@ -96,11 +153,18 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 		{
 			for (int j = 0; j < dimension; j++)
 			{
-				sb.append(String.format("%20.10f", this.getIj(i, j)));
+				sb.append(String.format("%20.10f", this.getEij(i, j)));
 			}
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public double[][] toDoubleVector()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -3,9 +3,9 @@ package app.arithmetic.model.matrix.type.square;
 import java.math.BigDecimal;
 
 import app.arithmetic.model.matrix.Matrix;
-import app.arithmetic.operation.Addable;
-import app.arithmetic.operation.Multipliable;
-import app.arithmetic.operation.Subtractable;
+import app.arithmetic.model.matrix.NormType;
+import app.arithmetic.model.matrix.type.MutableMatrix;
+import app.arithmetic.model.matrix.type.vector.ColumnMatrix;
 
 public class LowerTriangularMatrix extends SquareMatrix
 {
@@ -34,16 +34,40 @@ public class LowerTriangularMatrix extends SquareMatrix
 	}
 
 	@Override
-	public Addable add(Addable number)
+	public Matrix add(Matrix matrix)
 	{return null;}
 
 	@Override
-	public Subtractable subtract(Subtractable number)
+	public Matrix subtract(Matrix matrix)
 	{return null;}
 
 	@Override
-	public Multipliable multiply(Multipliable number)
-	{return null;}
+	public Matrix multiply(Matrix matrix)
+	{
+		MutableMatrix Y = null;
+		
+		if(matrix instanceof ColumnMatrix)
+		{
+			BigDecimal aij, xj, Saijxj;
+			Y = new ColumnMatrix(super.dimension);
+			for (int i = 0; i < super.dimension; i++)
+			{
+				Saijxj = BigDecimal.ZERO;
+				for (int j = 0; j < super.dimension; j++)
+				{
+					aij = this.getEij(i, j);
+					xj  = matrix.getEii(j);
+					Saijxj = Saijxj.add(aij.multiply(xj));
+				}
+				Y.setEii(i, Saijxj);
+			}
+		}
+		// else
+		// unsuported matrix type
+		//
+			
+		return Y;
+	}
 
 	@Override
 	public Matrix solve(Matrix B)
@@ -52,24 +76,36 @@ public class LowerTriangularMatrix extends SquareMatrix
 	}
 
 	@Override
-	public void determinant()
+	public BigDecimal determinant()
 	{
-		if(determinant != null)
-			return;
-		else
+		if(determinant == null)
 		{
 			determinant = BigDecimal.ONE;
 			for (int i = 0; i < elements.length; i++)
 				determinant = determinant.add(elements[i][i]);
 		}
+		return determinant;
 	}
 
+	@Override
+	public BigDecimal norm(NormType normType)
+	{
+		return null;
+	}
+	
 	@Override
 	public Matrix transpose()
 	{return null;}
 
 	@Override
-	public BigDecimal getIj(Integer rowIndex, Integer columnIndex)
+	public Matrix transposeSolve(Matrix B)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal getEij(Integer rowIndex, Integer columnIndex)
 	{
 		if(rowIndex < columnIndex)
 			return BigDecimal.ZERO;
@@ -78,9 +114,16 @@ public class LowerTriangularMatrix extends SquareMatrix
 	}
 
 	@Override
-	public void setIj(Integer rowIndex, Integer columnIndex, BigDecimal value)
+	public void setEij(Integer rowIndex, Integer columnIndex, BigDecimal value)
 	{
 		elements[rowIndex][columnIndex] = value;
+	}
+
+	@Override
+	public double[][] toDoubleVector()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

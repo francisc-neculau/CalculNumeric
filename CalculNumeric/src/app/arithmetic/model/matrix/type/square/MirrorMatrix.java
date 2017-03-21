@@ -16,19 +16,19 @@ public class MirrorMatrix extends LowerTriangularMatrix
 	}
 
 	@Override
-	public BigDecimal getIj(Integer rowIndex, Integer columnIndex)
+	public BigDecimal getEij(Integer rowIndex, Integer columnIndex)
 	{
 		if(rowIndex < columnIndex)
-			return super.getIj(columnIndex, rowIndex);
-		return super.getIj(rowIndex, columnIndex);
+			return super.getEij(columnIndex, rowIndex);
+		return super.getEij(rowIndex, columnIndex);
 	}
 	
 	@Override
-	public void setIj(Integer rowIndex, Integer columnIndex, BigDecimal value)
+	public void setEij(Integer rowIndex, Integer columnIndex, BigDecimal value)
 	{
 		if(rowIndex < columnIndex)
-			super.setIj(columnIndex, rowIndex, value);
-		super.setIj(rowIndex, columnIndex, value);
+			super.setEij(columnIndex, rowIndex, value);
+		super.setEij(rowIndex, columnIndex, value);
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class MirrorMatrix extends LowerTriangularMatrix
 		{
 			for (int j = 0; j < dimension; j++)
 			{
-				sb.append(String.format("%20.10f", this.getIj(i, j)));
+				sb.append(String.format("%20.10f", this.getEij(i, j)));
 			}
 			sb.append("\n");
 		}

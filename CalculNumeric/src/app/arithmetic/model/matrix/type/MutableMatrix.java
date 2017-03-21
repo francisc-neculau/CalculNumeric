@@ -11,11 +11,11 @@ public interface MutableMatrix extends Matrix
 	 * This method will modify the element
 	 * from the row i and column j
 	 */
-	public abstract void setIj(Integer rowIndex, Integer columnIndex, BigDecimal value);
+	public abstract void setEij(Integer rowIndex, Integer columnIndex, BigDecimal value);
 	
 	/**
 	 * This method will modify the element
 	 * from the row i and column i
 	 */
-	public abstract void setIi(Integer index, BigDecimal value);
+	public abstract void setEii(Integer index, BigDecimal value);
 }

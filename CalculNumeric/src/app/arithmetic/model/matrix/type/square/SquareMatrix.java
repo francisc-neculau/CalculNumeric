@@ -14,31 +14,26 @@ public abstract class SquareMatrix extends AbstractMatrix implements MutableMatr
 	{
 		super(dimension, dimension);
 		this.dimension = dimension;
-		this.determinant = BigDecimal.ZERO;
+		this.determinant = null;
 	}
 	
 	@Override
-	public BigDecimal getIi(Integer index)
+	public BigDecimal getEii(Integer index)
 	{
-		return this.getIj(index, index);
+		return this.getEij(index, index);
 	}
 	
 	@Override
-	public void setIi(Integer index, BigDecimal value)
+	public void setEii(Integer index, BigDecimal value)
 	{
-		this.setIj(index, index, value);
+		this.setEij(index, index, value);
 	}
 	
 	/**
 	 * This method computes the determinant
 	 * of the current matrix.
 	 */
-	public abstract void determinant();
-	
-	public BigDecimal getDeterminant()
-	{
-		return determinant;
-	}
+	public abstract BigDecimal determinant();
 	
 	public Integer getDimension()
 	{

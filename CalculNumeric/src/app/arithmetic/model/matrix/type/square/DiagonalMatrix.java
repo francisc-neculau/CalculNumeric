@@ -2,10 +2,11 @@ package app.arithmetic.model.matrix.type.square;
 
 import java.math.BigDecimal;
 
+import app.arithmetic.model.EpsilonPrecision;
 import app.arithmetic.model.matrix.Matrix;
-import app.arithmetic.operation.Addable;
-import app.arithmetic.operation.Multipliable;
-import app.arithmetic.operation.Subtractable;
+import app.arithmetic.model.matrix.NormType;
+import app.arithmetic.model.matrix.type.MutableMatrix;
+import app.arithmetic.model.matrix.type.vector.ColumnMatrix;
 
 /**
  * This class models matrices of the following form :
@@ -17,6 +18,7 @@ import app.arithmetic.operation.Subtractable;
  */
 public class DiagonalMatrix extends SquareMatrix
 {
+	private EpsilonPrecision precision = new EpsilonPrecision(9);
 	private BigDecimal[] elements;
 	
 	public DiagonalMatrix(Integer dimension)
@@ -33,57 +35,87 @@ public class DiagonalMatrix extends SquareMatrix
 
 	@Override
 	public Matrix solve(Matrix B)
-	{return null;}
+	{
+		MutableMatrix X = new ColumnMatrix(super.dimension);
+
+		BigDecimal xi, bi, aii;
+
+		X.setEii(0, B.getEii(0).divide(this.getEii(0), precision.getExponent(), BigDecimal.ROUND_HALF_UP));
+		
+		for(int i = 1; i < super.dimension; i++)
+		{
+			aii = this.getEii(i);
+			bi  = B.getEii(i);
+			xi  = bi.divide(aii, precision.getExponent(), BigDecimal.ROUND_HALF_UP);
+			X.setEii(i, xi);
+		}
+		
+		return X;
+	}
 
 	@Override
 	public Matrix transpose()
 	{return null;}
 
 	@Override
-	public Addable add(Addable number)
-	{return null;}
-
-	@Override
-	public Subtractable subtract(Subtractable number)
-	{return null;}
-
-	@Override
-	public Multipliable multiply(Multipliable number)
-	{return null;}
-
-	@Override
-	public void determinant()
+	public Matrix transposeSolve(Matrix B)
 	{
-		if(super.determinant.equals(BigDecimal.ZERO))
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Matrix add(Matrix matrix)
+	{return null;}
+
+	@Override
+	public Matrix subtract(Matrix matrix)
+	{return null;}
+
+	@Override
+	public Matrix multiply(Matrix matrix)
+	{return null;}
+
+	@Override
+	public BigDecimal determinant()
+	{
+		if(super.determinant == null)
 		{
-			determinant = BigDecimal.ONE;
+			super.determinant = BigDecimal.ONE;
 			for (int i = 0; i < super.dimension; i++)
-				determinant = determinant.multiply(elements[i]);
+				super.determinant = super.determinant.multiply(this.elements[i]);
 		}
+		return super.determinant;
 	}
 	
 	@Override
-	public BigDecimal getIj(Integer rowIndex, Integer columnIndex)
+	public BigDecimal norm(NormType normType)
+	{
+		return null;
+	}
+	
+	@Override
+	public BigDecimal getEij(Integer rowIndex, Integer columnIndex)
 	{
 		if(rowIndex == columnIndex)
-			return this.getIi(rowIndex);
+			return this.getEii(rowIndex);
 		return BigDecimal.ZERO;
 	}
 	
 	@Override
-	public BigDecimal getIi(Integer index)
+	public BigDecimal getEii(Integer index)
 	{
 		return elements[index];
 	}
 	
 	@Override
-	public void setIj(Integer i, Integer columnIndex, BigDecimal value)
+	public void setEij(Integer i, Integer columnIndex, BigDecimal value)
 	{
 		// should throw unsupported operation ?
 	}
 
 	@Override
-	public void setIi(Integer index, BigDecimal value)
+	public void setEii(Integer index, BigDecimal value)
 	{
 		elements[index] = value;
 	}
@@ -96,11 +128,19 @@ public class DiagonalMatrix extends SquareMatrix
 		{
 			for (int j = 0; j < dimension; j++)
 			{
-				sb.append(String.format("%20.10f", this.getIj(i, j)));
+				sb.append(String.format("%20.10f", this.getEij(i, j)));
 			}
 			sb.append("\n");
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public double[][] toDoubleVector()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }
