@@ -12,8 +12,6 @@ import app.arithmetic.model.matrix.type.square.StrictLowerTriangularMatrix;
 public class CholeskyDecomposition
 {
 	
-	private EpsilonPrecision precision = new EpsilonPrecision(9);
-
 	/**
 	 *  This algorithm uses mutable, memory efficient 
 	 * matrices. As input we will provide an MirrorMatrix 
@@ -58,7 +56,7 @@ public class CholeskyDecomposition
 				// Special case
 				if(p==0)
 				{
-					L.setEij(i, p, aip);
+					L.setEij(i, p, aip.divide(dp, EpsilonPrecision.getInstance().getExponent(), RoundingMode.HALF_UP));
 					continue;
 				}
 				//
@@ -69,13 +67,13 @@ public class CholeskyDecomposition
 					if(i == k)
 						lik = BigDecimal.ONE;
 					else
-						lik = A.getEij(i, k);
-					lpk  = A.getEij(p, k);
+						lik = L.getEij(i, k);
+					lpk  = L.getEij(p, k);
 					dk   = D.getEii(k);
 					Sdll = Sdll.add(dk.multiply(lik.multiply(lpk))); // ~Formula!~
 				}
 				// FIXME: Atentie la eroare de impartire aici !
-				lip = aip.subtract(Sdll).divide(dp, precision.getExponent(), RoundingMode.HALF_UP);
+				lip = aip.subtract(Sdll).divide(dp, EpsilonPrecision.getInstance().getExponent(), RoundingMode.HALF_UP);
 				L.setEij(i, p, lip); // ~Formula!~
 			}
 		}

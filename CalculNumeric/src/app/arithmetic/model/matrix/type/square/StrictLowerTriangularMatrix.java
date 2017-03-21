@@ -2,6 +2,7 @@ package app.arithmetic.model.matrix.type.square;
 
 import java.math.BigDecimal;
 
+import app.arithmetic.model.EpsilonPrecision;
 import app.arithmetic.model.matrix.Matrix;
 import app.arithmetic.model.matrix.NormType;
 import app.arithmetic.model.matrix.type.MutableMatrix;
@@ -57,7 +58,7 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 
 		BigDecimal xi, bi, Saijxj, aii;
 
-		X.setEii(0, B.getEii(0).divide(this.diagonalElement));
+		X.setEii(0, B.getEii(0).divide(this.diagonalElement, EpsilonPrecision.getInstance().getExponent(), BigDecimal.ROUND_HALF_DOWN));
 		
 		aii = this.diagonalElement;
 		for(int i = 1; i < super.dimension; i++)
@@ -68,7 +69,7 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 				Saijxj = Saijxj.add(this.getEij(i, j).multiply(X.getEii(j)));
 			}
 			bi = B.getEii(i);
-			xi = bi.subtract(Saijxj).divide(aii);
+			xi = bi.subtract(Saijxj).divide(aii, EpsilonPrecision.getInstance().getExponent(), BigDecimal.ROUND_HALF_DOWN);
 			X.setEii(i, xi);
 		}
 		
@@ -101,7 +102,7 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 				Saijxj = Saijxj.add(this.getEij(j, i).multiply(X.getEii(j)));
 			}
 			bi = B.getEii(i);
-			xi = bi.subtract(Saijxj).divide(aii);
+			xi = bi.subtract(Saijxj).divide(aii, EpsilonPrecision.getInstance().getExponent(), BigDecimal.ROUND_HALF_DOWN);
 			X.setEii(i, xi);
 		}
 		

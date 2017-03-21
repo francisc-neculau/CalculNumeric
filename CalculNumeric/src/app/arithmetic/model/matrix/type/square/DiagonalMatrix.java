@@ -18,7 +18,6 @@ import app.arithmetic.model.matrix.type.vector.ColumnMatrix;
  */
 public class DiagonalMatrix extends SquareMatrix
 {
-	private EpsilonPrecision precision = new EpsilonPrecision(9);
 	private BigDecimal[] elements;
 	
 	public DiagonalMatrix(Integer dimension)
@@ -40,13 +39,13 @@ public class DiagonalMatrix extends SquareMatrix
 
 		BigDecimal xi, bi, aii;
 
-		X.setEii(0, B.getEii(0).divide(this.getEii(0), precision.getExponent(), BigDecimal.ROUND_HALF_UP));
+		X.setEii(0, B.getEii(0).divide(this.getEii(0), EpsilonPrecision.getInstance().getExponent(), BigDecimal.ROUND_HALF_UP));
 		
 		for(int i = 1; i < super.dimension; i++)
 		{
 			aii = this.getEii(i);
 			bi  = B.getEii(i);
-			xi  = bi.divide(aii, precision.getExponent(), BigDecimal.ROUND_HALF_UP);
+			xi  = bi.divide(aii, EpsilonPrecision.getInstance().getExponent(), BigDecimal.ROUND_HALF_UP);
 			X.setEii(i, xi);
 		}
 		

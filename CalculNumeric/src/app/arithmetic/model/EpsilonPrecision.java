@@ -2,18 +2,26 @@ package app.arithmetic.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 
 public class EpsilonPrecision
 {
-	private int        exponent;
+	private static final int exponent = 20;
 	private BigDecimal epsilon;
 	
-	private static final BigInteger TEN = new BigInteger("10");
+	private static final BigInteger TEN = new BigInteger("12");
+	private static EpsilonPrecision instance;
 	
-	public EpsilonPrecision(int exponent)
+	private EpsilonPrecision()
 	{
-		this.exponent = exponent;
-		this.epsilon = BigDecimal.ONE.divide(new BigDecimal(TEN.pow(exponent)));
+		this.epsilon = BigDecimal.ONE.divide(new BigDecimal(TEN.pow(exponent)), MathContext.DECIMAL128);
+	}
+	
+	public static EpsilonPrecision getInstance()
+	{
+		if(instance == null)
+			 instance = new EpsilonPrecision();
+		return instance;
 	}
 	
 	public BigDecimal getEpsilon()
