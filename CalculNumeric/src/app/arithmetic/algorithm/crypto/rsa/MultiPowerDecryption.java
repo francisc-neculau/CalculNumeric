@@ -14,32 +14,36 @@ in your large integers library)
 	 */
 	public BigInteger decrypt(BigInteger p, BigInteger q, BigInteger e, BigInteger y)
 	{
-		BigInteger n, phi, d, x;
+		BigInteger phi, d, x, pp;
 		
-		n = p.pow(2).multiply(q);
-		phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+		pp = p.pow(2);
+		
+		phi = pp.subtract(p).multiply(q.subtract(BigInteger.ONE));
 		d = e.modInverse(phi);
-		
-		// Garner + TCR
 
-		BigInteger b0, b1, b2;
-		b0 = y.mod(p).modPow(d.mod(p.subtract(BigInteger.ONE)), p);
+		// TCR
+		// Hensel’s lifting
+		BigInteger b0, b1, x0, x1, E, yp2;
+		x0 = y.mod(p).modPow(d.mod(p.subtract(BigInteger.ONE)), p);
+		yp2 = y.mod(pp);
+		E = yp2.subtract(x0.modPow(e, pp)).mod(pp);
+		x1 = E.divide(p).multiply(e.multiply(x0.modPow(e.subtract(BigInteger.ONE), p)).modInverse(p)).mod(p);
+		/* xp^2 */
+		b0 = x0.add(p.multiply(x1));
+		/* xq */
 		b1 = y.mod(q).modPow(d.mod(q.subtract(BigInteger.ONE)), q);
-		b2 = y.mod(r).modPow(d.mod(r.subtract(BigInteger.ONE)), r);
-
-		BigInteger alfa1, alfa2, v0, v1, v2, m0, m1, m2;
-		m0 = p;
+		
+		// Garner
+		BigInteger alfa1, v0, v1, m0, m1;
+		m0 = pp;
 		m1 = q;
-		m2 = r;
 
 		alfa1 = m0.modInverse(m1);
-		alfa2 = (m0.multiply(m1)).modInverse(m2);
 		
 		v0 = b0;
 		v1 = (b1.subtract(b0.mod(m1)).multiply(alfa1)).mod(m1);
-		v2 = (b2.subtract((v0.add(v1.multiply(m0))).mod(m2)).multiply(alfa2)).mod(m2);
 		
-		x = (v2.multiply(m1).add(v1)).multiply(m0).add(v0);
+		x = v1.multiply(m0).add(v0);
 	
 		return x;
 	}
@@ -53,7 +57,7 @@ in your large integers library)
 		BigInteger p = new BigInteger(TWO.pow(3217).subtract(BigInteger.ONE).toString());
 		BigInteger q = new BigInteger(TWO.pow(4253).subtract(BigInteger.ONE).toString());
 		
-		BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+		BigInteger phi = p.pow(2).subtract(p).multiply(q.subtract(BigInteger.ONE));
 		BigInteger n = p.pow(2).multiply(q);
 		BigInteger e = new BigInteger("137");
 		BigInteger d = e.modInverse(phi);
@@ -75,7 +79,7 @@ in your large integers library)
 		
 		MultiPowerDecryption mpd = new MultiPowerDecryption();
 		timeStart = System.currentTimeMillis();
-		System.out.println("(TCR & Garner) plain-text : " + mpd.decrypt(p, q, e, y));
+		System.out.println("(TCR & Hensel’s lifting & Garner) plain-text : " + mpd.decrypt(p, q, e, y));
 		timeEnd = System.currentTimeMillis();
 		totalTime2 = timeEnd - timeStart;
 		

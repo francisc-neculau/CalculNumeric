@@ -15,9 +15,8 @@ library).
 	
 	public BigInteger decrypt(BigInteger p, BigInteger q, BigInteger r, BigInteger e, BigInteger y)
 	{
-		BigInteger n, phi, d, x;
+		BigInteger phi, d, x;
 		
-		n = p.multiply(q.multiply(r));
 		phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE).multiply(r.subtract(BigInteger.ONE)));
 		d = e.modInverse(phi);
 		
