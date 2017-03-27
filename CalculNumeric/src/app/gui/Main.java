@@ -1,8 +1,6 @@
 package app.gui;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 import app.arithmetic.algorithm.CholeskyDecomposition;
 import app.arithmetic.model.matrix.Matrix;
@@ -12,20 +10,21 @@ import app.arithmetic.model.matrix.type.square.DiagonalMatrix;
 import app.arithmetic.model.matrix.type.square.MirrorMatrix;
 import app.arithmetic.model.matrix.type.square.StrictLowerTriangularMatrix;
 import app.arithmetic.model.matrix.type.vector.ColumnMatrix;
+import app.gui.services.Homework1;
 
 public class Main
 {
 
 	public static void main(String[] args)
-	{
-//		BigDecimal a,b;
+	{		
+		
+//		Homework1.execute();
 //
-//		a = new BigDecimal("21384");
-//		b = new BigDecimal("43.111111120888888888");
-//		
-//		System.out.println(a.divide(b, 9, RoundingMode.HALF_DOWN));
-//		
-//		if(true)
+//		System.out.println(Homework1.getResults()[0]);
+//		System.out.println(Homework1.getResults()[1]);
+//		System.out.println(Homework1.getResults()[2]);
+//		System.out.println(Homework1.getResults()[3]);
+//		if(new Integer(1) == 1)
 //			return;
 
 		Integer matricesDimension = 4;
@@ -92,7 +91,7 @@ public class Main
 		 * (det A = det L det D det LT ) ;
 		 */
 		System.out.println("\nII" + "\n--------------------");
-		BigDecimal determinantA = L.determinant().multiply(D.determinant());
+		BigDecimal determinantA = D.determinant();//L.determinant().multiply(D.determinant());
 		System.out.println("det(A)="+determinantA);
 		
 		/* ***
