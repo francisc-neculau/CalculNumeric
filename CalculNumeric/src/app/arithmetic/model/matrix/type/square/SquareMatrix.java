@@ -17,6 +17,12 @@ public abstract class SquareMatrix extends AbstractMatrix implements MutableMatr
 		this.determinant = null;
 	}
 	
+	/**
+	 * This method computes the determinant
+	 * of the current matrix.
+	 */
+	public abstract BigDecimal determinant();
+	
 	@Override
 	public BigDecimal getEii(Integer index)
 	{
@@ -28,12 +34,6 @@ public abstract class SquareMatrix extends AbstractMatrix implements MutableMatr
 	{
 		this.setEij(index, index, value);
 	}
-	
-	/**
-	 * This method computes the determinant
-	 * of the current matrix.
-	 */
-	public abstract BigDecimal determinant();
 	
 	public Integer getDimension()
 	{

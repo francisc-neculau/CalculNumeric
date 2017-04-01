@@ -105,10 +105,12 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 	}
 
 	@Override
-	public double[][] toDoubleVector()
+	public double[][] doubleValue()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		double[][] elements = new double[getNumberOfRows()][1];
+		for (int i = 0; i < elements.length; i++)
+			elements[i][0] = this.getEii(i).doubleValue();
+		return elements;
 	}
 
 	@Override

@@ -27,8 +27,6 @@ public class Homework1
 			denominator = step * denominator;
 			machinePrecisionNumber = numerator / denominator;
 		} while(true);
-
-		System.out.println("u="+machinePrecisionNumber);
 		
 		results[0] = "machine precision number is "+machinePrecisionNumber.toString();
 		/* ********************************** */

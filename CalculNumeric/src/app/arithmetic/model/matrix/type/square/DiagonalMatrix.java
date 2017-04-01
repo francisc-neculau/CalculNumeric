@@ -38,9 +38,7 @@ public class DiagonalMatrix extends SquareMatrix
 		MutableMatrix X = new ColumnMatrix(super.dimension);
 
 		BigDecimal xi, bi, aii;
-
 		X.setEii(0, B.getEii(0).divide(this.getEii(0), EpsilonPrecision.getInstance().getExponent(), BigDecimal.ROUND_HALF_UP));
-		
 		for(int i = 1; i < super.dimension; i++)
 		{
 			aii = this.getEii(i);
@@ -48,7 +46,7 @@ public class DiagonalMatrix extends SquareMatrix
 			xi  = bi.divide(aii, EpsilonPrecision.getInstance().getExponent(), BigDecimal.ROUND_HALF_UP);
 			X.setEii(i, xi);
 		}
-		
+
 		return X;
 	}
 
@@ -135,7 +133,7 @@ public class DiagonalMatrix extends SquareMatrix
 	}
 
 	@Override
-	public double[][] toDoubleVector()
+	public double[][] doubleValue()
 	{
 		// TODO Auto-generated method stub
 		return null;

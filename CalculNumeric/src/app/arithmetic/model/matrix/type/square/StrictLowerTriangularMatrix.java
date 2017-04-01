@@ -162,7 +162,7 @@ public class StrictLowerTriangularMatrix extends SquareMatrix
 	}
 
 	@Override
-	public double[][] toDoubleVector()
+	public double[][] doubleValue()
 	{
 		// TODO Auto-generated method stub
 		return null;

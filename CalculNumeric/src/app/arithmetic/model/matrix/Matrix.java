@@ -57,5 +57,5 @@ public interface Matrix /*extends Addable, Subtractable, Multipliable*/
 	 */
 	public abstract Integer getNumberOfColumns();
 	
-	public abstract double[][] toDoubleVector();
+	public abstract double[][] doubleValue();
 }

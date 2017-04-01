@@ -120,10 +120,13 @@ public class LowerTriangularMatrix extends SquareMatrix
 	}
 
 	@Override
-	public double[][] toDoubleVector()
+	public double[][] doubleValue()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		double[][] elements = new double[super.dimension][super.dimension];
+		for (int i = 0; i < elements.length; i++)
+			for (int j = 0; j < elements.length; j++)
+				elements[i][j] = this.getEij(i, j).doubleValue();
+		return elements;
 	}
 
 }
