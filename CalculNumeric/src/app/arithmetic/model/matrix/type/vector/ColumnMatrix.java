@@ -17,6 +17,12 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 		this.elements = new BigDecimal[numberOfRows];
 	}
 	
+	public ColumnMatrix(Integer numberOfRows, BigDecimal [] elements)
+	{
+		this(numberOfRows);
+		this.elements = elements; // FIXME : Copy of it ?
+	}
+	
 	public ColumnMatrix(Integer numberOfRows, Double [] elements)
 	{
 		this(numberOfRows);
@@ -26,10 +32,7 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 
 	@Override
 	public Matrix add(Matrix matrix)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	{return null;}
 
 	@Override
 	public Matrix subtract(Matrix B)
@@ -49,10 +52,7 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 
 	@Override
 	public Matrix multiply(Matrix matrix)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	{return null;}
 
 	@Override
 	public BigDecimal norm(NormType normType)
@@ -72,31 +72,19 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 
 	@Override
 	public Matrix solve(Matrix B)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	{return null;}
 
 	@Override
 	public Matrix transposeSolve(Matrix B)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	{return null;}
 
 	@Override
 	public Matrix transpose()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	{return null;}
 
 	@Override
 	public BigDecimal getEij(Integer rowIndex, Integer columnIndex)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	{return null;}
 
 	@Override
 	public BigDecimal getEii(Integer index)
@@ -115,15 +103,28 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 
 	@Override
 	public void setEij(Integer rowIndex, Integer columnIndex, BigDecimal value)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	{}
 
 	@Override
 	public void setEii(Integer index, BigDecimal value)
 	{
 		this.elements[index] = value;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj == this) 
+			return true;
+		if(!(obj instanceof ColumnMatrix))
+		    return false;
+		ColumnMatrix matrix = (ColumnMatrix) obj;
+		if(this.elements.length != matrix.elements.length)
+			return false;
+		for (int i = 0; i < this.elements.length; i++)
+			if(this.elements[i].compareTo(matrix.elements[i]) != 0)
+				return false;
+		return true;
 	}
 	
 	@Override

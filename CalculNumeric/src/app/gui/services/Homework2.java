@@ -11,7 +11,7 @@ import app.arithmetic.model.matrix.NormType;
 import app.arithmetic.model.matrix.type.MutableMatrix;
 import app.arithmetic.model.matrix.type.square.DiagonalMatrix;
 import app.arithmetic.model.matrix.type.square.MirrorMatrix;
-import app.arithmetic.model.matrix.type.square.StrictLowerTriangularMatrix;
+import app.arithmetic.model.matrix.type.square.triangular.StrictLowerTriangularMatrix;
 import app.arithmetic.model.matrix.type.vector.ColumnMatrix;
 
 public class Homework2

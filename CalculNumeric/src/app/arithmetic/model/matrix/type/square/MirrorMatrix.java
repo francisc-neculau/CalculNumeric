@@ -2,6 +2,8 @@ package app.arithmetic.model.matrix.type.square;
 
 import java.math.BigDecimal;
 
+import app.arithmetic.model.matrix.type.square.triangular.LowerTriangularMatrix;
+
 public class MirrorMatrix extends LowerTriangularMatrix
 {
 
