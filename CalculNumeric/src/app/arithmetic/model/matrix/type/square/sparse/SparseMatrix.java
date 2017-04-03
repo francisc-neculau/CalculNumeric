@@ -1,8 +1,8 @@
 package app.arithmetic.model.matrix.type.square.sparse;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -243,7 +243,40 @@ public class SparseMatrix extends SquareMatrix
 		}
 		else if(B instanceof SparseMatrix)
 		{
-			throw new UnsupportedOperationException();
+			SparseMatrix sparseB = (SparseMatrix)B;
+			
+			// compute in advance the diagonal products
+			BigDecimal [] diagonalProducts = new BigDecimal[super.dimension];
+			for (int i = 0; i < super.dimension; i++)
+				diagonalProducts[i] = this.d[i].multiply(sparseB.d[i]);
+
+			BigDecimal cijValue;
+			SortedSet<IndexedElement> elements = new TreeSet<>();
+			int rowIndex;
+			for(int k = 0; k < this.length; k++)
+			{
+				rowIndex = - this.col[k] - 1;
+				// if we have a row gap thus only the diagonal element will be available
+				if(this.col[k + 1] < 0)
+				{
+					elements.add(new IndexedElement(diagonalProducts[rowIndex], rowIndex, rowIndex));
+					// More to compute here !!!
+					continue;
+				}
+
+				// for every 'i' column of B
+				for (int i = 0; i < super.dimension; i++)
+				{
+					// for every 'j' element of the 'i'th column of B compute the 
+					for (int j = 0; j < super.dimension; j++)
+					{
+						cijValue = BigDecimal.ZERO;
+						// computing element ij
+						if(i==j)
+							cijValue = cijValue.add(diagonalProducts[i]);
+					}
+				}
+			}
 		}
 		else
 			throw new UnsupportedOperationException();
