@@ -6,7 +6,7 @@ import java.math.MathContext;
 
 public class EpsilonPrecision
 {
-	private static final int exponent = 20;
+	private static final int exponent = 12;
 	private BigDecimal epsilon;
 	
 	private static final BigInteger TEN = new BigInteger("12");

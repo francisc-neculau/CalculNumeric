@@ -1,6 +1,10 @@
 package app.arithmetic.model.matrix.type.square.sparse;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -35,22 +39,21 @@ public class SparseMatrix extends SquareMatrix
 		this.col = columnIndices;
 		this.length = length;
 	}
-	
-	/* indexedElements must be in ascending row index
-	 * indexedElement mean a tuple(value, i, j)
-	 */
+
 	private void initialize(SortedSet<IndexedElement> elements)
 	{
 		Integer rowIndex, columnIndex, previousRowIndex, counter;
 		BigDecimal value;
 		
-		// indexedElements.size() = number of not null elements including not null diagonal ones
-		//
-		// indexedElements.size() + super.dimension + 2 --> 
-		// this is for the worst case situation in which all diagonal are null
-		val = new BigDecimal[elements.size()*2 + super.dimension + 2];
-		col = new int[elements.size()*2 + super.dimension + 2];
+		// FIXME : Can it be improved here ?
+		// This is for the worst case situation in which all diagonal are null
+		int initialMemoryAllocationSize = elements.size()*2 + super.dimension + 2;
+		val = new BigDecimal[initialMemoryAllocationSize];
+		col = new int[initialMemoryAllocationSize];
 		d   = new BigDecimal[super.dimension];
+		for (int i = 0; i < super.dimension; i++)
+			d[i] = BigDecimal.ZERO;
+			
 		counter = 1;
 		previousRowIndex = 0;
 		val[0] = BigDecimal.ZERO;
@@ -72,7 +75,6 @@ public class SparseMatrix extends SquareMatrix
 						val[counter] = BigDecimal.ZERO;
 						col[counter] = -(i + 1);
 						counter++;
-						d[i] = BigDecimal.ZERO;
 					}
 				}
 				else
@@ -80,8 +82,6 @@ public class SparseMatrix extends SquareMatrix
 					val[counter] = BigDecimal.ZERO;
 					col[counter] = -(previousRowIndex + 2);
 					counter++;
-					if(d[previousRowIndex] == null)
-						d[previousRowIndex] = BigDecimal.ZERO;
 				}
 				previousRowIndex = rowIndex;
 			}
@@ -250,33 +250,65 @@ public class SparseMatrix extends SquareMatrix
 			for (int i = 0; i < super.dimension; i++)
 				diagonalProducts[i] = this.d[i].multiply(sparseB.d[i]);
 
-			BigDecimal cijValue;
-			SortedSet<IndexedElement> elements = new TreeSet<>();
-			int rowIndex;
-			for(int k = 0; k < this.length; k++)
+			// compute in advance the row offsets
+			int [] rowOffsetA = new int[super.dimension];
+			for (int i = 0; i < this.length; i++)
+				if(this.col[i] < 0)
+					rowOffsetA[(-this.col[i]-1)] = i + 1;
+			
+			// compute in advance the column offsets
+			List<Map<Integer, Integer>> columnOffsetB = new ArrayList<>();
+			int rowCounter = 0;
+			for (int i = 0; i < super.dimension; i++)
+				columnOffsetB.add(new HashMap<Integer, Integer>());
+			for (int i = 0; i < sparseB.length; i++)
 			{
-				rowIndex = - this.col[k] - 1;
-				// if we have a row gap thus only the diagonal element will be available
-				if(this.col[k + 1] < 0)
+				if(sparseB.col[i] < 0)
 				{
-					elements.add(new IndexedElement(diagonalProducts[rowIndex], rowIndex, rowIndex));
-					// More to compute here !!!
+					rowCounter = (-sparseB.col[i]-1);
 					continue;
 				}
-
-				// for every 'i' column of B
-				for (int i = 0; i < super.dimension; i++)
+				columnOffsetB.get(sparseB.col[i] - 1).put(rowCounter, i);
+			}
+			
+			BigDecimal c_ij, a_ik, b_kj;
+			SortedSet<IndexedElement> elements = new TreeSet<>();
+			int rowIndexOfB = 0;
+			// for each row 'i' of A
+			for (int i = 0; i < super.dimension; i++)
+			{
+				// for each column 'j' of B
+				for (int j = 0; j < super.dimension; j++)
 				{
-					// for every 'j' element of the 'i'th column of B compute the 
-					for (int j = 0; j < super.dimension; j++)
+					if(i == j)
+						c_ij = diagonalProducts[i];
+					else if(columnOffsetB.get(j).containsKey(i))
+						c_ij = sparseB.val[columnOffsetB.get(j).get(i)].multiply(this.d[i]);
+					else
+						c_ij = BigDecimal.ZERO;
+					for (int k = 0; k < super.dimension; k++)
 					{
-						cijValue = BigDecimal.ZERO;
-						// computing element ij
-						if(i==j)
-							cijValue = cijValue.add(diagonalProducts[i]);
+						a_ik = this.val[rowOffsetA[i] + k];
+						// do we have any element left in row 'i' to multiply ?
+						if(a_ik.compareTo(BigDecimal.ZERO) == 0)
+							break;
+						rowIndexOfB = this.col[rowOffsetA[i] + k] - 1;
+						// is there ,for column 'j' of B, an element on row 'k' ?
+						if(columnOffsetB.get(j).containsKey(rowIndexOfB))
+							b_kj = sparseB.val[columnOffsetB.get(j).get(rowIndexOfB)];
+						// was 'j' equal to 'k' ?
+						else if(rowIndexOfB == j)
+							b_kj = sparseB.d[rowIndexOfB];
+						else
+							continue;
+						c_ij = c_ij.add(a_ik.multiply(b_kj));
+						
 					}
+					if(c_ij.compareTo(BigDecimal.ZERO) != 0)
+						elements.add(new IndexedElement(c_ij, i, j));
 				}
 			}
+			result = new SparseMatrix(super.dimension, elements);
 		}
 		else
 			throw new UnsupportedOperationException();
@@ -304,6 +336,12 @@ public class SparseMatrix extends SquareMatrix
 	{return null;}
 
 	@Override
+	public BigDecimal getEii(Integer index)
+	{
+		return this.d[index];
+	}
+	
+	@Override
 	public BigDecimal determinant()
 	{return null;}
 
@@ -326,6 +364,11 @@ public class SparseMatrix extends SquareMatrix
 		return this.col;
 	}
 
+	public int getLength()
+	{
+		return this.length;
+	}
+	
 	@Override
 	public boolean equals(Object o)
 	{

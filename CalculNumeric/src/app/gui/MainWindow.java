@@ -15,12 +15,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import app.gui.services.Homework1;
 import app.gui.services.Homework2;
-import javax.swing.border.EmptyBorder;
+import app.gui.services.Homework3;
 
 public class MainWindow extends JFrame
 {
@@ -29,6 +30,7 @@ public class MainWindow extends JFrame
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextPane textPane_1;
+	private JTextPane textPane_3;
 	private String stringMatrices;
 
 	public MainWindow()
@@ -124,6 +126,28 @@ public class MainWindow extends JFrame
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Tema 3", null, panel_3, null);
 		
+		panel_3.setLayout(null);
+		
+		JScrollPane scrollPane3 = new JScrollPane();
+		scrollPane3.setBounds(125, 11, 534, 360);
+		panel_3.add(scrollPane3);
+		
+		textPane_3 = new JTextPane();
+		scrollPane3.setViewportView(textPane_3);
+		textPane_3.setBorder(new EmptyBorder(10, 10, 10, 10));
+		textPane_3.setEditable(false);
+		
+		JButton btnNewButton_2 = new JButton("Run");
+		btnNewButton_2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				MainWindow.this.updateHomework3Display();
+			}
+		});
+		btnNewButton_2.setBounds(10, 348, 105, 23);
+		panel_3.add(btnNewButton_2);
+		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		this.setResizable(false);
@@ -146,6 +170,12 @@ public class MainWindow extends JFrame
 		Homework2.setStringMatrices(stringMatrices);
 		Homework2.execute();
 		textPane_1.setText(Homework2.getResults()[0]);
+	}
+	
+	private void updateHomework3Display()
+	{
+		Homework3.execute();
+		textPane_3.setText(Homework3.getResults()[0]);
 	}
 	
 	public void setStringMatrices(String stringMatrices)

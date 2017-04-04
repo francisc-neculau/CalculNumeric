@@ -113,12 +113,20 @@ public class SparseMatrixFileReader
 			int rowIndex, columnIndex;
 			BigDecimal value;
 			IndexedElement element = null;
+			int firstComma = 0, lastComma = 0;
 			while((line = reader.readLine()) != null)
 			{
-				value = new BigDecimal(line.substring(0, line.indexOf(',')).trim());
-				rowIndex    = Integer.valueOf(line.substring(line.indexOf(',') + 1, line.lastIndexOf(',')).trim());
-				columnIndex = Integer.valueOf(line.substring(line.lastIndexOf(',') + 1).trim());
+				firstComma = line.indexOf(',');
+				lastComma  = line.lastIndexOf(',');
+				
+				value = new BigDecimal(line.substring(0, firstComma).trim());
+				rowIndex    = Integer.valueOf(line.substring(firstComma + 1, lastComma).trim());
+				columnIndex = Integer.valueOf(line.substring(lastComma + 1).trim());
+				
 				element = new IndexedElement(value, rowIndex, columnIndex);
+
+				if(columnIndex == rowIndex && value.compareTo(BigDecimal.ZERO) == 0)
+					logger.warn("Diagonal element " + rowIndex + " - " + columnIndex + "is 0 !");
 				if(cachedElements.contains(element))
 					logger.error("Duplicate element found : \n" + element);
 				else
