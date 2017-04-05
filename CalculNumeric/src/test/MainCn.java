@@ -16,43 +16,55 @@ public class MainCn
 	public static void main(String[] args)
 	{
 		BasicConfigurator.configure();
-//		long startTime, endTime;
-//
-//		SparseMatrixFileReader m1, m2, m3, m4;
-//		Matrix M1, B1, M2, B2, M3, B3, M4, B4;
-//		
-//		m1 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_1.txt");
-//		m2 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_2.txt");
-//		m3 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_3.txt");
-//		m4 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_4.txt");
-//		//
-//		//
-//		startTime = System.currentTimeMillis();
-//		//
-//		//
-//		M1  = new SparseMatrix(m1.getDimension(), m1.getElements());
-//		B1  = new ColumnMatrix(m1.getDimension(), m1.getBelements());
-//		
-//		M2  = new SparseMatrix(m2.getDimension(), m2.getElements());
-//		B2  = new ColumnMatrix(m2.getDimension(), m2.getBelements());
-//		
-//		M3  = new SparseMatrix(m3.getDimension(), m3.getElements());
-//		B3  = new ColumnMatrix(m3.getDimension(), m3.getBelements());
-//		
-//		M4  = new SparseMatrix(m4.getDimension(), m4.getElements());
-//		B4  = new ColumnMatrix(m4.getDimension(), m4.getBelements());
-//		//
-//		//
-//		endTime = System.currentTimeMillis();
-//		System.out.println("Program ended - time : " + new Double((endTime - startTime))/1000 + "s");
-//		//
-//		//
-		SparseMatrixFileReader file = new SparseMatrixFileReader("resources/homework4/test.txt");
-		SparseMatrix A = new SparseMatrix(file.getDimension(), file.getElements());
-		ColumnMatrix B = new ColumnMatrix(file.getDimension(), file.getBelements());
+		long startTime, endTime;
+
+		SparseMatrixFileReader m1, m2, m3, m4;
+		SparseMatrix M1, M2, M3, M4;
+		ColumnMatrix B1, B2, B3, B4;
+
+		m1 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_1.txt");
+		m2 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_2.txt");
+		m3 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_3.txt");
+		m4 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_4.txt");
+		//
+		//
+		startTime = System.currentTimeMillis();
+		//
+		//
+		M1  = new SparseMatrix(m1.getDimension(), m1.getElements());
+		B1  = new ColumnMatrix(m1.getDimension(), m1.getBelements());
+		
+		M2  = new SparseMatrix(m2.getDimension(), m2.getElements());
+		B2  = new ColumnMatrix(m2.getDimension(), m2.getBelements());
+		
+		M3  = new SparseMatrix(m3.getDimension(), m3.getElements());
+		B3  = new ColumnMatrix(m3.getDimension(), m3.getBelements());
+		
+		M4  = new SparseMatrix(m4.getDimension(), m4.getElements());
+		B4  = new ColumnMatrix(m4.getDimension(), m4.getBelements());
+		
 		GaussSeidel gs = new GaussSeidel(10000);
-		gs.solve(A, B);
-		System.out.println(gs.getXgs());
+		gs.solve(M1, B1);
+		//System.out.println(gs.getXgs());
+		gs.solve(M2, B2);
+		//System.out.println(gs.getXgs());
+		gs.solve(M3, B3);
+		//System.out.println(gs.getXgs());
+		gs.solve(M4, B4);
+		//System.out.println(gs.getXgs());
+		
+		//
+		//
+		endTime = System.currentTimeMillis();
+		System.out.println("Program ended - time : " + new Double((endTime - startTime))/1000 + "s");
+		//
+		//
+//		SparseMatrixFileReader file = new SparseMatrixFileReader("resources/homework4/test.txt");
+//		SparseMatrix A = new SparseMatrix(file.getDimension(), file.getElements());
+//		ColumnMatrix B = new ColumnMatrix(file.getDimension(), file.getBelements());
+//		GaussSeidel gs = new GaussSeidel(1);
+//		gs.solve(A, B);
+//		System.out.println(gs.getXgs());
 		
 //		BasicConfigurator.configure();
 //		long startTime, endTime;

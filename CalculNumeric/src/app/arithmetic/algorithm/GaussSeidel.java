@@ -22,8 +22,10 @@ public class GaussSeidel
 	
 	public boolean solve(SparseMatrix A, ColumnMatrix B)
 	{	
+		long startTime, endTime;
+		
 		int iterationNumber = 0, n;
-		BigDecimal newXi, aii, aij, bi, deltaX, firstSum, secondSum;
+		BigDecimal newXi, aii, aij, bi, deltaX, sum;
 
 		n = A.getDimension();
 
@@ -36,58 +38,61 @@ public class GaussSeidel
 			if(A.getColumnIndicies()[i] < 0)
 				rowOffsetsOfA[(-A.getColumnIndicies()[i]-1)] = i + 1;
 		
-		int offset = 0;
+		int offset = 0, rowOffsetOfA;
+		boolean converging = false;
 		do
 		{
 			iterationNumber++;
-			
+//			//
+//			//
+//			startTime = System.currentTimeMillis();
+//			//
+//			//
 			for (int i = 0; i < n; i++)
 			{
-				firstSum  = BigDecimal.ZERO;
-				secondSum = BigDecimal.ZERO;
+				sum  = BigDecimal.ZERO;
 				aii = A.getEii(i);
 				bi  = B.getEii(i);
 				
 				offset = 0;
-				for (int j = 0; j <= i - 1; j++)
+				// We do not need to worry of the j==i case because 
+				// A'columnIndices vector does not contain the diagonal elements
+				for (int j = 0; j < n; j++)
 				{
+					rowOffsetOfA = rowOffsetsOfA[i] + offset;
 					// are there any values for A on row 'i' ?
-					if(A.getColumnIndicies()[rowOffsetsOfA[i] + offset] < 0)
+					if(A.getColumnIndicies()[rowOffsetOfA] < 0)
 						break;
 					// does A have a value on column 'j' for row 'i' ?
-					if(A.getColumnIndicies()[rowOffsetsOfA[i] + offset] - 1 != j)
+					if(A.getColumnIndicies()[rowOffsetOfA] - 1 != j)
 					{
 						// jump j straight to the first column 'j' for which we have a value of A on row 'i'
-						j = (A.getColumnIndicies()[rowOffsetsOfA[i] + offset] - 1 - 1 );
+						j = (A.getColumnIndicies()[rowOffsetOfA] - 1 - 1 );
 						continue;
 					}
-					aij = A.getValues()[rowOffsetsOfA[i] + offset];
-					firstSum = firstSum.add(aij.multiply(Xgs.getEii(j)));
+					aij = A.getValues()[rowOffsetOfA];
+					sum = sum.add(aij.multiply(Xgs.getEii(j)));
 					offset++;
 				}
-				for (int j = i + 1; j < n; j++)
-				{
-					// are there any values for A on row 'i' ?
-					if(A.getColumnIndicies()[rowOffsetsOfA[i] + offset] < 0)
-						break;
-					// does A have a value on column 'j' for row 'i' ?
-					if(A.getColumnIndicies()[rowOffsetsOfA[i] + offset] - 1 != j)
-					{
-						// jump j straight to the first column 'j' for which we have a value of A on row 'i'
-						j = (A.getColumnIndicies()[rowOffsetsOfA[i] + offset] - 1 - 1 );
-						continue;
-					}
-					aij = A.getValues()[rowOffsetsOfA[i] + offset];
-					secondSum = secondSum.add(aij.multiply(Xgs.getEii(j)));
-					offset++;
-				}
-				newXi = bi.subtract(firstSum).subtract(secondSum).divide(aii, EpsilonPrecision.getInstance().getExponent(), RoundingMode.HALF_UP);
-				deltaX = newXi.subtract(Xgs.getEii(i));//FIXME !
+
+				newXi = bi.subtract(sum).divide(aii, EpsilonPrecision.getInstance().getExponent(), RoundingMode.HALF_UP);
+				deltaX = newXi.subtract(Xgs.getEii(i)).abs();
+				if(deltaX.compareTo(EpsilonPrecision.getInstance().getEpsilon()) == -1)
+					converging = true;
 				Xgs.setEii(i, newXi);
 			}
 			
+			if(converging/* && iterationNumber > 100*/)
+				break;
 			if(iterationNumber == maxNumberOfIterations)
 				break;
+			
+//			//
+//			//
+//			endTime = System.currentTimeMillis();
+//			System.out.println("Iteration " + iterationNumber + " time : " + new Double((endTime - startTime))/1000 + "s");
+//			//
+//			//
 		} while(true);
 		
 		return true;
