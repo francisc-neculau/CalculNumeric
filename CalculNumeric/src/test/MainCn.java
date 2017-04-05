@@ -43,15 +43,15 @@ public class MainCn
 		M4  = new SparseMatrix(m4.getDimension(), m4.getElements());
 		B4  = new ColumnMatrix(m4.getDimension(), m4.getBelements());
 		
-		GaussSeidel gs = new GaussSeidel(10000);
+		GaussSeidel gs = new GaussSeidel(100);
 		gs.solve(M1, B1);
-		//System.out.println(gs.getXgs());
+		System.out.println(gs.getXgs());
 		gs.solve(M2, B2);
-		//System.out.println(gs.getXgs());
+		System.out.println(gs.getXgs());
 		gs.solve(M3, B3);
-		//System.out.println(gs.getXgs());
+		System.out.println(gs.getXgs());
 		gs.solve(M4, B4);
-		//System.out.println(gs.getXgs());
+		System.out.println(gs.getXgs());
 		
 		//
 		//

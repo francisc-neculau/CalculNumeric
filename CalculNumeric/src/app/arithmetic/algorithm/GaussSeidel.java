@@ -25,8 +25,10 @@ public class GaussSeidel
 		long startTime, endTime;
 		
 		int iterationNumber = 0, n;
-		BigDecimal newXi, aii, aij, bi, deltaX, sum;
+		BigDecimal newXi, aii, aij, bi, deltaX, newDeltaX, sum;
 
+		deltaX    = BigDecimal.ZERO;
+		newDeltaX = BigDecimal.ZERO;
 		n = A.getDimension();
 
 		Xgs = new ColumnMatrix(n);
@@ -43,14 +45,9 @@ public class GaussSeidel
 		do
 		{
 			iterationNumber++;
-//			//
-//			//
-//			startTime = System.currentTimeMillis();
-//			//
-//			//
 			for (int i = 0; i < n; i++)
 			{
-				sum  = BigDecimal.ZERO;
+				sum = BigDecimal.ZERO;
 				aii = A.getEii(i);
 				bi  = B.getEii(i);
 				
@@ -74,28 +71,20 @@ public class GaussSeidel
 					sum = sum.add(aij.multiply(Xgs.getEii(j)));
 					offset++;
 				}
-
 				newXi = bi.subtract(sum).divide(aii, EpsilonPrecision.getInstance().getExponent(), RoundingMode.HALF_UP);
-				deltaX = newXi.subtract(Xgs.getEii(i)).abs();
+				
+				newDeltaX = newXi.subtract(Xgs.getEii(i)).abs();
+				deltaX    = deltaX.compareTo(newDeltaX) == 1 ? deltaX : newDeltaX;
 				if(deltaX.compareTo(EpsilonPrecision.getInstance().getEpsilon()) == -1)
 					converging = true;
+				
 				Xgs.setEii(i, newXi);
 			}
+			deltaX = BigDecimal.ZERO;
 			
-			if(converging/* && iterationNumber > 100*/)
-				break;
-			if(iterationNumber == maxNumberOfIterations)
-				break;
-			
-//			//
-//			//
-//			endTime = System.currentTimeMillis();
-//			System.out.println("Iteration " + iterationNumber + " time : " + new Double((endTime - startTime))/1000 + "s");
-//			//
-//			//
-		} while(true);
+		} while((iterationNumber != maxNumberOfIterations) && (!converging));
 		
-		return true;
+		return converging;
 	}
 	
 	public Matrix getXgs()
