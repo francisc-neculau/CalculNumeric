@@ -6,7 +6,7 @@ import java.math.MathContext;
 
 public class EpsilonPrecision
 {
-	private static final int exponent = 12;
+	private static int exponent = 12;
 	private BigDecimal epsilon;
 	
 	private static final BigInteger TEN = new BigInteger("12");
@@ -27,6 +27,13 @@ public class EpsilonPrecision
 	public BigDecimal getEpsilon()
 	{
 		return epsilon;
+	}
+	
+	// FIXME : This is not good !
+	public void setExponent(int exponenet)
+	{
+		EpsilonPrecision.exponent = exponenet;
+		this.epsilon = BigDecimal.ONE.divide(new BigDecimal(TEN.pow(exponent)), MathContext.DECIMAL128);
 	}
 	
 	public int getExponent()

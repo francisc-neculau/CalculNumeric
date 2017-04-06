@@ -6,6 +6,7 @@ import org.apache.log4j.BasicConfigurator;
 
 import app.arithmetic.algorithm.GaussSeidel;
 import app.arithmetic.model.matrix.Matrix;
+import app.arithmetic.model.matrix.NormType;
 import app.arithmetic.model.matrix.type.square.sparse.SparseMatrix;
 import app.arithmetic.model.matrix.type.vector.ColumnMatrix;
 import app.arithmetic.util.SparseMatrixFileReader;
@@ -21,7 +22,8 @@ public class MainCn
 		SparseMatrixFileReader m1, m2, m3, m4;
 		SparseMatrix M1, M2, M3, M4;
 		ColumnMatrix B1, B2, B3, B4;
-
+		Matrix R1, R2, R3, R4;
+		
 		m1 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_1.txt");
 		m2 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_2.txt");
 		m3 = new SparseMatrixFileReader("resources/homework4/m_rar_2017_3.txt");
@@ -44,15 +46,26 @@ public class MainCn
 		B4  = new ColumnMatrix(m4.getDimension(), m4.getBelements());
 		
 		GaussSeidel gs = new GaussSeidel(100);
-		gs.solve(M1, B1);
-		System.out.println(gs.getXgs());
-		gs.solve(M2, B2);
-		System.out.println(gs.getXgs());
-		gs.solve(M3, B3);
-		System.out.println(gs.getXgs());
-		gs.solve(M4, B4);
-		System.out.println(gs.getXgs());
 		
+		gs.solve(M1, B1);
+		R1 = M1.multiply(gs.getXgs()).subtract(B1);
+		System.out.println(gs.getXgs());
+		System.out.println("Norm : " + R1.norm(NormType.UNIFORM).toPlainString());
+		
+		gs.solve(M2, B2);
+		R2 = M2.multiply(gs.getXgs()).subtract(B2);
+		System.out.println(gs.getXgs());
+		System.out.println("Norm : " + R2.norm(NormType.UNIFORM).toPlainString());
+		
+		gs.solve(M3, B3);
+		R3 = M3.multiply(gs.getXgs()).subtract(B3);
+		System.out.println(gs.getXgs());
+		System.out.println("Norm : " + R3.norm(NormType.UNIFORM).toPlainString());
+		
+		gs.solve(M4, B4);
+		R4 = M4.multiply(gs.getXgs()).subtract(B4);
+		System.out.println(gs.getXgs());
+		System.out.println("Norm : " + R4.norm(NormType.UNIFORM).toPlainString());
 		//
 		//
 		endTime = System.currentTimeMillis();

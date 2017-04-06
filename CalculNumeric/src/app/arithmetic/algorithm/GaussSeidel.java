@@ -22,9 +22,7 @@ public class GaussSeidel
 	
 	public boolean solve(SparseMatrix A, ColumnMatrix B)
 	{	
-		long startTime, endTime;
-		
-		int iterationNumber = 0, n;
+		int iterationNumber = 0, n, offset = 0, rowOffsetOfA;
 		BigDecimal newXi, aii, aij, bi, deltaX, newDeltaX, sum;
 
 		deltaX    = BigDecimal.ZERO;
@@ -40,7 +38,6 @@ public class GaussSeidel
 			if(A.getColumnIndicies()[i] < 0)
 				rowOffsetsOfA[(-A.getColumnIndicies()[i]-1)] = i + 1;
 		
-		int offset = 0, rowOffsetOfA;
 		boolean converging = false;
 		do
 		{

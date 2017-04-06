@@ -57,17 +57,29 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 	@Override
 	public BigDecimal norm(NormType normType)
 	{
-		// Default Euclidean
-		BigDecimal zi, Szi;
-		Double norm;
-		Szi = BigDecimal.ZERO;
-		for (int i = 0; i < this.getNumberOfRows(); i++)
+		BigDecimal norm = null;
+		switch(normType)
 		{
-			zi = this.getEii(i);
-			Szi.add(zi.pow(2));
+			case EUCLIDEAN :
+				BigDecimal zi, Szi;
+				Szi = BigDecimal.ZERO;
+				for (int i = 0; i < this.getNumberOfRows(); i++)
+				{
+					zi = this.getEii(i);
+					Szi.add(zi.pow(2));
+				}
+				norm = new BigDecimal(Math.sqrt(Szi.doubleValue()));
+				break;
+			case UNIFORM :
+					norm = this.getEii(0).abs();
+					for (int i = 1; i < this.elements.length; i++)
+						if(norm.compareTo(this.elements[i].abs()) == -1)
+							norm = this.elements[i].abs();
+				break;
+			default:
+				break;
 		}
-		norm = Math.sqrt(Szi.doubleValue());
-		return new BigDecimal(norm);
+		return norm;
 	}
 
 	@Override
