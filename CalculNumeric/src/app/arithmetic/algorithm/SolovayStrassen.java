@@ -5,41 +5,41 @@ import java.util.Random;
 
 public class SolovayStrassen
 {
+	private static final BigInteger TWO = new BigInteger("2");
+	private JacobiSymbol jacobiSymbol;
 	int numberOfIterations;
-	
+
 	public SolovayStrassen(int numberOfIterations)
 	{
 		this.numberOfIterations = numberOfIterations;
+		this.jacobiSymbol = new JacobiSymbol();
 	}
 	
-	public boolean isPrime(BigInteger number)
+	public boolean isPrime(BigInteger n)
 	{
-		BigInteger a, r, s, number_1, number_2, number_1_2;
-		number_1   = number.subtract(BigInteger.ONE);
-		number_2   = number.subtract(BigInteger.ONE).subtract(BigInteger.ONE);
-		number_1_2 = number.subtract(BigInteger.ONE).divide((BigInteger.ONE.add(BigInteger.ONE)));
+		BigInteger a, r, s, nMinusOne, nMinusTwo, nMinusOneDivideByTwo;
+		nMinusOne = n.subtract(BigInteger.ONE);
+		nMinusTwo = n.subtract(TWO);
+		nMinusOneDivideByTwo = n.subtract(BigInteger.ONE).divide(TWO);
 
 		for (int i = 0; i < numberOfIterations; i++)
 		{
-			a = generateRandom(new Random(System.nanoTime()), number_2);
-			r = a.modPow(number_1_2, number);
-			if(!r.equals(BigInteger.ONE) && !r.equals(number_1))
+			a = generateRandom(new Random(System.nanoTime()), TWO, nMinusTwo);
+			if(a.compareTo(new BigInteger("2")) == -1 || a.compareTo(nMinusTwo) == 1)
+				System.out.println(a);
+			r = a.modPow(nMinusOneDivideByTwo, n);
+			if(!r.equals(BigInteger.ONE) && !r.equals(nMinusOne))
 				return false;
-			
-			s = jacobiSymbol(a, number);
-			
-			if(!r.mod(number).equals(s.mod(number)))
+
+			s = new BigInteger(jacobiSymbol.compute(a, n).toString());
+
+			if(!r.mod(n).equals(s.mod(n)))
 				return false;
 		}
 		return true;
 	}
 	
-	private BigInteger jacobiSymbol(BigInteger a, BigInteger n)
-	{
-		return null;
-	}
-	
-	private BigInteger generateRandom(Random random,BigInteger upperBound)
+	private BigInteger generateRandom(Random random, BigInteger lowerBound, BigInteger upperBound)
 	{
 		int nlen = upperBound.bitLength();
 		BigInteger nm1 = upperBound.subtract(BigInteger.ONE);
@@ -48,7 +48,8 @@ public class SolovayStrassen
 		    s = new BigInteger(nlen + 100, random);
 		    r = s.mod(upperBound);
 		} while (s.subtract(r).add(nm1).bitLength() >= nlen + 100);
-		
+		if(r.subtract(lowerBound).compareTo(BigInteger.ZERO) != 1)
+			r = r.add(lowerBound);
 		return r;
 	}
 }

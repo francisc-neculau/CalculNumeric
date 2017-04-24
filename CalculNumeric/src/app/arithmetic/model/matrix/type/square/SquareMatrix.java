@@ -9,7 +9,9 @@ public abstract class SquareMatrix extends AbstractMatrix implements MutableMatr
 {
 	protected BigDecimal determinant;
 	protected Integer dimension;
-
+	protected boolean diagonallyRowDominant;
+	protected boolean diagonallyColumnDominant;
+	
 	public SquareMatrix(Integer dimension)
 	{
 		super(dimension, dimension);
@@ -18,10 +20,20 @@ public abstract class SquareMatrix extends AbstractMatrix implements MutableMatr
 	}
 	
 	/**
-	 * This method computes the determinant
+	 * This method computes and returns the determinant
 	 * of the current matrix.
 	 */
 	public abstract BigDecimal determinant();
+	
+	public boolean isDiagonallyRowDominant()
+	{
+		return diagonallyRowDominant;
+	}
+	
+	public boolean isDiagonallyColumnDominant()
+	{
+		return diagonallyColumnDominant;
+	}
 	
 	@Override
 	public BigDecimal getEii(Integer index)

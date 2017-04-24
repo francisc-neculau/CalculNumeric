@@ -1,16 +1,103 @@
 package test;
 
 import java.math.BigInteger;
-import java.util.Random;
 
-import app.arithmetic.algorithm.crypto.rsa.MultiPowerDecryption;
-import app.arithmetic.algorithm.crypto.rsa.MultiPrimeDecryption;
+import app.arithmetic.algorithm.LucasLehmer;
+import app.arithmetic.algorithm.SolovayStrassen;
 
 public class MainActn
 {
 
 	public static void main(String[] args)
 	{
+		/*
+		 * Test Jacobi Symbol 
+		 */
+		
+//		BigInteger a;
+//		BigInteger n;
+//		
+//		JacobiSymbol jacobiSymbol = new JacobiSymbol();
+//
+//		a = new BigInteger("13");
+//		n = new BigInteger("23");
+//		System.out.println("Jacobi Symbol for " + a + " and " + n + "is" + jacobiSymbol.compute(a, n));
+//		
+//		a = new BigInteger("107");
+//		n = new BigInteger("23");
+//		System.out.println("Jacobi Symbol for " + a + " and " + n + "is" + jacobiSymbol.compute(a, n));
+//		
+//		a = new BigInteger("22");
+//		n = new BigInteger("22");
+//		System.out.println("Jacobi Symbol for " + a + " and " + n + "is" + jacobiSymbol.compute(a, n));
+//		
+//		for (int i = 1; i < 179424691; i++)
+//		{
+//			a = new BigInteger(Integer.valueOf(i).toString());
+//			n = new BigInteger("179424691");
+//			System.out.println("Jacobi Symbol for " + a + " and " + n + "is" + jacobiSymbol.compute(a, n));			
+//		}
+
+		
+		/*
+		 * Test mersenMod
+		 */
+//		LucasLehmer lucasLehmer = new LucasLehmer();
+//		BigInteger x  = new BigInteger("61");
+//		BigInteger Mn = new BigInteger("31");
+//		int n  = 5;
+//		
+//		System.out.println(lucasLehmer.mersenMod(x, Mn, n));
+//		System.out.println(lucasLehmer.isPrime(Mn, n));
+//		System.out.println(lucasLehmer.isPrime(n));
+		
+//		int a, b, m, i;
+//		int result;
+//
+//		a = 194;
+//		i = 5;
+//		b = (int) (Math.pow(2, i) - 1);
+//		m = (int) (Math.pow(2, i));
+//
+//		result = (a & b) + (a >> i);
+//		System.out.println(a + " & "  + b + " : " + (a & b));
+//		System.out.println(a + " >> " + i + " : " + (a >> i));
+//		System.out.println(result);
+//		System.out.println(((194 >> 5) + (194 & 31)));
+
+		long startTime, endTime;
+		
+		int n  = 1279;
+		BigInteger Mn = (new BigInteger("2")).pow(n).subtract(BigInteger.ONE);
+
+		SolovayStrassen solovayStrassen = new SolovayStrassen(64);
+		LucasLehmer lucasLehmer = new LucasLehmer();
+		//
+		//
+		startTime = System.currentTimeMillis();
+		System.out.println(Mn + " is prime ? \n" + solovayStrassen.isPrime(Mn));
+		endTime = System.currentTimeMillis();
+		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
+		//
+		//
+		startTime = System.currentTimeMillis();
+		System.out.println(Mn + " is prime ? \n" + lucasLehmer.isPrimeSlow(Mn, n));
+		endTime = System.currentTimeMillis();
+		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
+		//
+		//
+		startTime = System.currentTimeMillis();
+		System.out.println(Mn + " is prime ? \n" + lucasLehmer.isPrime(Mn, n));
+		endTime = System.currentTimeMillis();
+		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
+		//
+		//
+		
+		
+		
+		
+		
+		
 		/*
 		 * Polynomial
 		 */
@@ -166,97 +253,97 @@ public class MainActn
 //		System.out.println();
 //		System.out.println("text : " + x);
 //		System.out.println("crypto-text : " + x.modPow(e, n));
-		Integer numberOfIterations = 100;
-		MultiPrimeDecryption mprmd;
-		MultiPowerDecryption mpowd;
-		Long timeStart, timeEnd, totalTime11 = 0l, totalTime12 = 0l, totalTime2 = 0l, totalTime3 = 0l;
-		boolean ok = false;
-		for (int i = 0; i < numberOfIterations; i++)
-		{
-			Random rnd = new Random();
-			
-			BigInteger p = BigInteger.probablePrime(1024, rnd);
-			BigInteger pp = p.pow(2);
-			BigInteger q = BigInteger.probablePrime(1024, rnd);
-			BigInteger r = BigInteger.probablePrime(1024, rnd);
-			
-			BigInteger n = p.multiply(q.multiply(r));
-			BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE).multiply(r.subtract(BigInteger.ONE)));
-			
-			BigInteger e = null;
-			BigInteger d = null;
-			while(!ok)
-			{
-				try
-				{
-					e = BigInteger.probablePrime(8, rnd); // gcd(e, phi) = 1 !
-					d = e.modInverse(phi);                // d = e^-1; (d * e) mod phi = 1
-					ok = true;
-				}
-				catch(Exception e1)
-				{
-					System.out.println("Prime not invertible, try again");
-				}
-			}
-			ok = false;
-
-			BigInteger x = new BigInteger(new Integer(113 + rnd.nextInt() * i + 10 * i).toString());
-			BigInteger y = x.pow(e.intValue()).mod(n);
-
-			// Library Function :
-			timeStart = System.nanoTime();
-			n = p.multiply(q.multiply(r));
-			phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE).multiply(r.subtract(BigInteger.ONE)));
-			y.modPow(d, n);
-			//System.out.println("plain-text  : " + y.modPow(d, n));
-			timeEnd = System.nanoTime();
-			totalTime11 += (timeEnd - timeStart);
-			
-			// TCR & Garner
-			mprmd = new MultiPrimeDecryption();
-			timeStart = System.nanoTime();
-			mprmd.decrypt(p, q, r, e, y);
-			//System.out.println("(TCR & Garner) plain-text : " + mprmd.decrypt(p, q, r, e, y));
-			timeEnd = System.nanoTime();
-			totalTime2 += (timeEnd - timeStart);
-			
-			phi = pp.subtract(p).multiply(q.subtract(BigInteger.ONE));
-			n   = pp.multiply(q);
-			d = e.modInverse(phi);
-			y = x.pow(e.intValue()).mod(n);
-			
-			// Library Function :
-			timeStart = System.nanoTime();
-			phi = pp.subtract(p).multiply(q.subtract(BigInteger.ONE));
-			n   = pp.multiply(q);
-			y.modPow(d, n);
-			//System.out.println("plain-text  : " + y.modPow(d, n));
-			timeEnd = System.nanoTime();
-			totalTime12 += (timeEnd - timeStart);
-			
-			// TCR & Hensel’s lifting & Garner
-			mpowd = new MultiPowerDecryption();
-			timeStart = System.nanoTime();
-			mpowd.decrypt(p, q, e, y);
-			//System.out.println("(TCR & Hensel’s lifting & Garner) plain-text : " + mpowd.decrypt(p, q, e, y));
-			timeEnd = System.nanoTime();
-			totalTime3 += (timeEnd - timeStart);
-		}
-		System.out.println("Ab - Library");
-		System.out.println("Ac - Library");
-		System.out.println("B - TCR & Garner");
-		System.out.println("C - TCR & Hensel’s lifting & Garner");
-		System.out.println("Total time Ab : " + totalTime11);
-		System.out.println("Total time Ac : " + totalTime12);
-		System.out.println("Total time B : " + totalTime2);
-		System.out.println("Total time C : " + totalTime3);
-//		System.out.println("Avearage time Ab : " + new Double(totalTime11)/new Double(numberOfIterations));
-//		System.out.println("Avearage time Ac : " + new Double(totalTime12)/new Double(numberOfIterations));
-//		System.out.println("Avearage time B  : " + new Double(totalTime2)/new Double(numberOfIterations));
-//		System.out.println("Avearage time C  : " + new Double(totalTime3)/new Double(numberOfIterations));
-		System.out.println("Time Improvement Ab/B : " + new Double(totalTime11)/new Double(totalTime2));
-		System.out.println("Time Improvement Ac/C : " + new Double(totalTime12)/new Double(totalTime3));
-		//System.out.println("Time Improvement C/B  : " + new Double(totalTime3)/new Double(totalTime2));
+//		Integer numberOfIterations = 100;
+//		MultiPrimeDecryption mprmd;
+//		MultiPowerDecryption mpowd;
+//		Long timeStart, timeEnd, totalTime11 = 0l, totalTime12 = 0l, totalTime2 = 0l, totalTime3 = 0l;
+//		boolean ok = false;
+//		for (int i = 0; i < numberOfIterations; i++)
+//		{
+//			Random rnd = new Random();
+//			
+//			BigInteger p = BigInteger.probablePrime(1024, rnd);
+//			BigInteger pp = p.pow(2);
+//			BigInteger q = BigInteger.probablePrime(1024, rnd);
+//			BigInteger r = BigInteger.probablePrime(1024, rnd);
+//			
+//			BigInteger n = p.multiply(q.multiply(r));
+//			BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE).multiply(r.subtract(BigInteger.ONE)));
+//			
+//			BigInteger e = null;
+//			BigInteger d = null;
+//			while(!ok)
+//			{
+//				try
+//				{
+//					e = BigInteger.probablePrime(8, rnd); // gcd(e, phi) = 1 !
+//					d = e.modInverse(phi);                // d = e^-1; (d * e) mod phi = 1
+//					ok = true;
+//				}
+//				catch(Exception e1)
+//				{
+//					System.out.println("Prime not invertible, try again");
+//				}
+//			}
+//			ok = false;
+//
+//			BigInteger x = new BigInteger(new Integer(113 + rnd.nextInt() * i + 10 * i).toString());
+//			BigInteger y = x.pow(e.intValue()).mod(n);
+//
+//			// Library Function :
+//			timeStart = System.nanoTime();
+//			n = p.multiply(q.multiply(r));
+//			phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE).multiply(r.subtract(BigInteger.ONE)));
+//			y.modPow(d, n);
+//			//System.out.println("plain-text  : " + y.modPow(d, n));
+//			timeEnd = System.nanoTime();
+//			totalTime11 += (timeEnd - timeStart);
+//			
+//			// TCR & Garner
+//			mprmd = new MultiPrimeDecryption();
+//			timeStart = System.nanoTime();
+//			mprmd.decrypt(p, q, r, e, y);
+//			//System.out.println("(TCR & Garner) plain-text : " + mprmd.decrypt(p, q, r, e, y));
+//			timeEnd = System.nanoTime();
+//			totalTime2 += (timeEnd - timeStart);
+//			
+//			phi = pp.subtract(p).multiply(q.subtract(BigInteger.ONE));
+//			n   = pp.multiply(q);
+//			d = e.modInverse(phi);
+//			y = x.pow(e.intValue()).mod(n);
+//			
+//			// Library Function :
+//			timeStart = System.nanoTime();
+//			phi = pp.subtract(p).multiply(q.subtract(BigInteger.ONE));
+//			n   = pp.multiply(q);
+//			y.modPow(d, n);
+//			//System.out.println("plain-text  : " + y.modPow(d, n));
+//			timeEnd = System.nanoTime();
+//			totalTime12 += (timeEnd - timeStart);
+//			
+//			// TCR & Hensel’s lifting & Garner
+//			mpowd = new MultiPowerDecryption();
+//			timeStart = System.nanoTime();
+//			mpowd.decrypt(p, q, e, y);
+//			//System.out.println("(TCR & Hensel’s lifting & Garner) plain-text : " + mpowd.decrypt(p, q, e, y));
+//			timeEnd = System.nanoTime();
+//			totalTime3 += (timeEnd - timeStart);
+//		}
+//		System.out.println("Ab - Library");
+//		System.out.println("Ac - Library");
+//		System.out.println("B - TCR & Garner");
+//		System.out.println("C - TCR & Hensel’s lifting & Garner");
+//		System.out.println("Total time Ab : " + totalTime11);
+//		System.out.println("Total time Ac : " + totalTime12);
+//		System.out.println("Total time B : " + totalTime2);
+//		System.out.println("Total time C : " + totalTime3);
+////		System.out.println("Avearage time Ab : " + new Double(totalTime11)/new Double(numberOfIterations));
+////		System.out.println("Avearage time Ac : " + new Double(totalTime12)/new Double(numberOfIterations));
+////		System.out.println("Avearage time B  : " + new Double(totalTime2)/new Double(numberOfIterations));
+////		System.out.println("Avearage time C  : " + new Double(totalTime3)/new Double(numberOfIterations));
+//		System.out.println("Time Improvement Ab/B : " + new Double(totalTime11)/new Double(totalTime2));
+//		System.out.println("Time Improvement Ac/C : " + new Double(totalTime12)/new Double(totalTime3));
+//		//System.out.println("Time Improvement C/B  : " + new Double(totalTime3)/new Double(totalTime2));
 	}
 	
 }

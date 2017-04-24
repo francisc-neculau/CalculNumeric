@@ -5,12 +5,28 @@ import java.math.BigDecimal;
 public interface Matrix /*extends Addable, Subtractable, Multipliable*/
 {
 
-	public abstract Matrix add(Matrix B);
+	public abstract Matrix add(Matrix matrix);
+	
+	public default Matrix addDiagonal(BigDecimal number){return null;}
 
-	public abstract Matrix subtract(Matrix B);
+	public abstract Matrix subtract(Matrix matrix);
 
-	public abstract Matrix multiply(Matrix B);
+	public abstract Matrix multiply(Matrix matrix);
 
+	public default Matrix multiply(BigDecimal number){return null;}
+	
+	// FIXME : documentation + implementations
+	public default BigDecimal multiplyToNumber(Matrix matrix){return null;};
+	
+	// FIXME : documentation + implementations
+	public default Matrix transposeMultiply(Matrix matrix){return null;};
+	
+	// FIXME : documentation + implementations
+	public default Matrix transposeMultiply(BigDecimal number){return null;};
+	
+	// FIXME : documentation + implementations
+	public default BigDecimal transposeMultiplyToNumber(Matrix matrix){return null;};
+	
 	public abstract BigDecimal norm(NormType normType);
 	
 	/**
@@ -35,6 +51,8 @@ public interface Matrix /*extends Addable, Subtractable, Multipliable*/
 	 */
 	public abstract Matrix transpose();
 
+	public default Matrix negate(){return null;}
+	
 	/**
 	 * This method will return the element
 	 * from the row i and column j

@@ -2,6 +2,7 @@ package app.arithmetic.model.matrix.type.vector;
 
 import java.math.BigDecimal;
 
+import app.arithmetic.model.EpsilonPrecision;
 import app.arithmetic.model.matrix.AbstractMatrix;
 import app.arithmetic.model.matrix.Matrix;
 import app.arithmetic.model.matrix.NormType;
@@ -32,28 +33,64 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 
 	@Override
 	public Matrix add(Matrix matrix)
-	{return null;}
-
-	@Override
-	public Matrix subtract(Matrix B)
 	{
-		MutableMatrix X = null;
-		if(B instanceof ColumnMatrix && ((ColumnMatrix)B).getNumberOfColumns() == this.getNumberOfColumns())
+		MutableMatrix result = null;
+		if(matrix instanceof ColumnMatrix && ((ColumnMatrix)matrix).getNumberOfColumns() == this.getNumberOfColumns())
 		{
-			X = new ColumnMatrix(this.getNumberOfRows());
+			result = new ColumnMatrix(this.getNumberOfRows());
 			for (int i = 0; i < this.getNumberOfRows(); i++)
-				X.setEii(i, this.getEii(i).subtract(B.getEii(i)));
+				result.setEii(i, this.getEii(i).add(matrix.getEii(i), super.getMathContext()));
 		}
+		else
+			throw new UnsupportedOperationException();
 		//
 		// Unsupported operation
 		//
-		return X;
+		return result;
+	}
+
+	@Override
+	public Matrix subtract(Matrix matrix)
+	{
+		MutableMatrix result = null;
+		if(matrix instanceof ColumnMatrix && ((ColumnMatrix)matrix).getNumberOfColumns() == this.getNumberOfColumns())
+		{
+			result = new ColumnMatrix(this.getNumberOfRows());
+			for (int i = 0; i < this.getNumberOfRows(); i++)
+				result.setEii(i, this.getEii(i).subtract(matrix.getEii(i), super.getMathContext()));
+		}
+		else
+			throw new UnsupportedOperationException();
+		//
+		// Unsupported operation
+		//
+		return result;
 	}
 
 	@Override
 	public Matrix multiply(Matrix matrix)
 	{return null;}
 
+	@Override
+	public Matrix multiply(BigDecimal number)
+	{
+		BigDecimal[] elements = new BigDecimal[this.elements.length];
+		for (int i = 0; i < elements.length; i++)
+			elements[i] = this.elements[i].multiply(number, super.getMathContext());
+		Matrix result = new ColumnMatrix(elements.length, elements);
+		return result;
+	}
+	
+	@Override
+	public BigDecimal transposeMultiplyToNumber(Matrix B)
+	{
+		// so we compute the transpose of current times the column matrix B
+		BigDecimal sum = BigDecimal.ZERO;
+		for (int i = 0; i < elements.length; i++)
+			sum = sum.add(this.getEii(i).multiply(B.getEii(i), super.getMathContext()), super.getMathContext());
+		return sum;
+	}
+	
 	@Override
 	public BigDecimal norm(NormType normType)
 	{
@@ -65,12 +102,13 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 				Szi = BigDecimal.ZERO;
 				for (int i = 0; i < this.getNumberOfRows(); i++)
 				{
-					zi = this.getEii(i);
-					Szi.add(zi.pow(2));
+					zi  = this.getEii(i);
+					Szi = Szi.add(new BigDecimal(zi.doubleValue() * zi.doubleValue()), this.getMathContext());
 				}
-				norm = new BigDecimal(Math.sqrt(Szi.doubleValue()));
+				norm = new BigDecimal(Math.sqrt(Szi.doubleValue()), this.getMathContext());
 				break;
 			case UNIFORM :
+			case MAXIMUM :
 					norm = this.getEii(0).abs();
 					for (int i = 1; i < this.elements.length; i++)
 						if(norm.compareTo(this.elements[i].abs()) == -1)

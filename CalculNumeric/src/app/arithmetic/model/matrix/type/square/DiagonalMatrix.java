@@ -139,5 +139,4 @@ public class DiagonalMatrix extends SquareMatrix
 		return null;
 	}
 
-	
 }

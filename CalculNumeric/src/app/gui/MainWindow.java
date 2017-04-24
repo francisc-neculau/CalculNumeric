@@ -23,6 +23,8 @@ import app.gui.services.Homework1;
 import app.gui.services.Homework2;
 import app.gui.services.Homework3;
 import app.gui.services.Homework4;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class MainWindow extends JFrame
 {
@@ -37,6 +39,15 @@ public class MainWindow extends JFrame
 	private JTextPane textPane_41, textPane_42, textPane_43, textPane_44;
 	private JTextPane textPane_t41, textPane_t42, textPane_t43, textPane_t44;
 	private JTextPane textPane_n41, textPane_n42, textPane_n43, textPane_n44;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
+	private JTextField textField_7;
+	private JTextField txtDimension;
 	public MainWindow()
 	{
 		// cum as putea calcula inversa unei matrici
@@ -231,6 +242,74 @@ public class MainWindow extends JFrame
 		textPane_n44 = new JTextPane();
 		textPane_n44.setBounds(630, 394, 164, 20);
 		panel_4.add(textPane_n44);
+		
+		JPanel panel_5 = new JPanel();
+		tabbedPane.addTab("Tema 5", null, panel_5, null);
+		panel_5.setLayout(null);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(444, 11, 350, 350);
+		panel_5.add(scrollPane_2);
+		
+		JTextPane textPane_2 = new JTextPane();
+		scrollPane_2.setViewportView(textPane_2);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(84, 11, 350, 350);
+		panel_5.add(scrollPane_4);
+		
+		JTextPane textPane_4 = new JTextPane();
+		scrollPane_4.setViewportView(textPane_4);
+		
+		textField = new JTextField();
+		textField.setBounds(184, 372, 250, 20);
+		panel_5.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(94, 372, 86, 20);
+		panel_5.add(textField_1);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(544, 372, 250, 20);
+		panel_5.add(textField_2);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(544, 403, 250, 20);
+		panel_5.add(textField_3);
+		
+		textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		textField_4.setBounds(454, 372, 86, 20);
+		panel_5.add(textField_4);
+		
+		textField_5 = new JTextField();
+		textField_5.setColumns(10);
+		textField_5.setBounds(184, 403, 250, 20);
+		panel_5.add(textField_5);
+		
+		textField_6 = new JTextField();
+		textField_6.setColumns(10);
+		textField_6.setBounds(94, 403, 86, 20);
+		panel_5.add(textField_6);
+		
+		textField_7 = new JTextField();
+		textField_7.setColumns(10);
+		textField_7.setBounds(454, 403, 86, 20);
+		panel_5.add(textField_7);
+		
+		JButton btnNewButton = new JButton("Run");
+		btnNewButton.setBounds(10, 104, 64, 23);
+		panel_5.add(btnNewButton);
+		
+		txtDimension = new JTextField();
+		txtDimension.setText("4");
+		txtDimension.setBounds(10, 138, 64, 20);
+		panel_5.add(txtDimension);
+		txtDimension.setColumns(10);
 		
 		////////////////////////////////////////////////////////////////
 		

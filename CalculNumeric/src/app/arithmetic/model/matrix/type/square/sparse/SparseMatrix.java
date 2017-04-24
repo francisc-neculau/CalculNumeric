@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 import app.arithmetic.model.matrix.Matrix;
 import app.arithmetic.model.matrix.NormType;
 import app.arithmetic.model.matrix.type.square.SquareMatrix;
@@ -20,10 +18,13 @@ public class SparseMatrix extends SquareMatrix
 	private BigDecimal [] d;
 	private BigDecimal [] val;
 	private int [] col;
-	
+	// rowsOfsets
+	// colummnOfsets
+	// private double sparsity;
+	// this length is obfuscated and must be changed
 	private int length;
 	
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+	// private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	public SparseMatrix(Integer dimension, SortedSet<IndexedElement> elements)
 	{
@@ -118,12 +119,13 @@ public class SparseMatrix extends SquareMatrix
 		
 		BigDecimal value;
 		int columnIndex;
+		// FIXME : Here I think the size is too big !
 		int [] columnIndices = new int[this.dimension * 20 + sparseB.dimension * 2];
 		BigDecimal [] diagonalElements = new BigDecimal[this.dimension];
 		BigDecimal [] values           = new BigDecimal[this.dimension * 20 + sparseB.dimension * 2];
 		
 		for (int i = 0; i < this.dimension; i++)
-			diagonalElements[i] = this.d[i].add(sparseB.d[i]);
+			diagonalElements[i] = this.d[i].add(sparseB.d[i], this.getMathContext());
 		
 		int counter = 0, k1 = 0, k2 = 0, rowIndex1 = -1, rowIndex2 = -1;
 		while(k1 != this.length || k2 != sparseB.length)
@@ -187,7 +189,7 @@ public class SparseMatrix extends SquareMatrix
 					}
 					else
 					{
-						value       = this.val[k1].add(sparseB.val[k2]);
+						value       = this.val[k1].add(sparseB.val[k2], this.getMathContext());
 						columnIndex = this.col[k1];
 						k1++;
 						k2++;
@@ -234,10 +236,10 @@ public class SparseMatrix extends SquareMatrix
 				{
 					rowIndex = - this.col[k] - 1;
 					elements[rowIndex] = BigDecimal.ZERO;
-					elements[rowIndex] = elements[rowIndex].add(this.d[rowIndex].multiply(B.getEii(rowIndex)));
+					elements[rowIndex] = elements[rowIndex].add(this.d[rowIndex].multiply(B.getEii(rowIndex), this.getMathContext()), this.getMathContext());
 					continue;
 				}
-				elements[rowIndex] = elements[rowIndex].add(B.getEii(col[k] - 1).multiply(val[k]));
+				elements[rowIndex] = elements[rowIndex].add(B.getEii(col[k] - 1).multiply(val[k], this.getMathContext()), this.getMathContext());
 			}
 			result = new ColumnMatrix(super.dimension, elements);
 		}
@@ -283,7 +285,7 @@ public class SparseMatrix extends SquareMatrix
 					if(i == j)
 						c_ij = diagonalProducts[i];
 					else if(columnOffsetB.get(j).containsKey(i))
-						c_ij = sparseB.val[columnOffsetB.get(j).get(i)].multiply(this.d[i]);
+						c_ij = sparseB.val[columnOffsetB.get(j).get(i)].multiply(this.d[i], this.getMathContext());
 					else
 						c_ij = BigDecimal.ZERO;
 					for (int k = 0; k < super.dimension; k++)
@@ -301,7 +303,7 @@ public class SparseMatrix extends SquareMatrix
 							b_kj = sparseB.d[rowIndexOfB];
 						else
 							continue;
-						c_ij = c_ij.add(a_ik.multiply(b_kj));
+						c_ij = c_ij.add(a_ik.multiply(b_kj, this.getMathContext()), this.getMathContext());
 						
 					}
 					if(c_ij.compareTo(BigDecimal.ZERO) != 0)
@@ -429,4 +431,5 @@ public class SparseMatrix extends SquareMatrix
 
 		return sb.toString();
 	}
+
 }

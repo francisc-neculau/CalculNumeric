@@ -31,7 +31,7 @@ public class GaussSeidel
 
 		Xgs = new ColumnMatrix(n);
 		for (int i = 0; i < n; i++)
-			Xgs.setEii(i, BigDecimal.ONE.add(new BigDecimal(i)));
+			Xgs.setEii(i, BigDecimal.ZERO);
 		
 		int [] rowOffsetsOfA = new int[n];
 		for (int i = 0; i < A.getLength(); i++)

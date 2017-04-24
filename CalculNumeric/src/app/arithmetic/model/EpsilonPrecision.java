@@ -3,18 +3,21 @@ package app.arithmetic.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 
 public class EpsilonPrecision
 {
-	private static int exponent = 12;
+	private static int exponent = 18;
 	private BigDecimal epsilon;
+	private MathContext mc;
 	
-	private static final BigInteger TEN = new BigInteger("12");
+	private static final BigInteger TEN = new BigInteger("10");
 	private static EpsilonPrecision instance;
 	
 	private EpsilonPrecision()
 	{
-		this.epsilon = BigDecimal.ONE.divide(new BigDecimal(TEN.pow(exponent)), MathContext.DECIMAL128);
+		this.mc = new MathContext(exponent, RoundingMode.CEILING);
+		this.epsilon = BigDecimal.ONE.divide(new BigDecimal(TEN.pow(exponent)), this.mc);
 	}
 	
 	public static EpsilonPrecision getInstance()
@@ -39,6 +42,11 @@ public class EpsilonPrecision
 	public int getExponent()
 	{
 		return exponent;
+	}
+	
+	public MathContext getMathContext()
+	{
+		return this.mc;
 	}
 	
 	@Override

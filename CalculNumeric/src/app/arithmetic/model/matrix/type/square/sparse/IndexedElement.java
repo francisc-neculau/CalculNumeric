@@ -1,6 +1,7 @@
 package app.arithmetic.model.matrix.type.square.sparse;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class IndexedElement implements Comparable<IndexedElement>
 {
@@ -15,6 +16,13 @@ public class IndexedElement implements Comparable<IndexedElement>
 		this.columnIndex = columnIndex;
 	}
 	
+	public IndexedElement(BigInteger value, int rowIndex, int columnIndex)
+	{
+		this.value = new BigDecimal(value);
+		this.rowIndex = rowIndex;
+		this.columnIndex = columnIndex;
+	}
+
 	public BigDecimal getValue()
 	{
 		return value;
@@ -38,6 +46,11 @@ public class IndexedElement implements Comparable<IndexedElement>
 	public void setColumnIndex(int columnIndex)
 	{
 		this.columnIndex = columnIndex;
+	}
+	
+	public IndexedElement transpose()
+	{
+		return new IndexedElement(value, columnIndex, rowIndex);
 	}
 
 	@Override
