@@ -41,17 +41,17 @@ public class LiAndLi
 			// ********** Step 1
 			vPrevious = v;
 			// ********** Step 2
-//			avPrevious = A.multiply(vPrevious);
-//			v = vPrevious.multiply(avPrevious.multiply(avPrevious).addDiagonal(THREE).subtract(avPrevious.multiply(THREE))); 
+			// Li and Li first version
+			avPrevious = A.multiply(vPrevious);
+			v = vPrevious.multiply(avPrevious.multiply(avPrevious).addDiagonal(THREE).subtract(avPrevious.multiply(THREE))); 
 
-			avPrevious = negativeA.multiply(vPrevious);
-			
-			firstParenthesis  = avPrevious.addDiagonal(BigDecimal.ONE);
-			secondParenthesis = avPrevious.addDiagonal(THREE).multiply(avPrevious.addDiagonal(THREE));
-			
-			v = vPrevious.multiply(
-					firstParenthesis.multiply(secondParenthesis).multiply(ONE_QUARTER).addDiagonal(BigDecimal.ONE)
-					); 
+			// Li and Li second version
+//			avPrevious = negativeA.multiply(vPrevious);
+//			firstParenthesis  = avPrevious.addDiagonal(BigDecimal.ONE);
+//			secondParenthesis = avPrevious.addDiagonal(THREE).multiply(avPrevious.addDiagonal(THREE));
+//			v = vPrevious.multiply(
+//					firstParenthesis.multiply(secondParenthesis).multiply(ONE_QUARTER).addDiagonal(BigDecimal.ONE)
+//					); 
 
 			// ********** norm
 			deltaNorm = v.subtract(vPrevious).norm(NormType.MAXIMUM);

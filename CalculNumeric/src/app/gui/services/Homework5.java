@@ -57,13 +57,13 @@ public class Homework5
 		//
 		//
 		endTime = System.currentTimeMillis();
-		results[0] = (new Double((endTime - startTime))/1000 + "s");
+		results[4] = " time : " + (new Double((endTime - startTime))/1000 + "s");
 		//
 		//
-		results[1] = "converged   : " + hotellingBodewig.hasConverged();
-		results[2] = "iteration # : " + hotellingBodewig.getIterationNumber();
-		results[3] = "first norm  : " + A.multiply(hotellingBodewig.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM);
-		results[4] = "inverse of A : \n" + hotellingBodewig.getInverseAproximation();
+		results[1] = " converged : " + hotellingBodewig.hasConverged();
+		results[2] = " iteration : " + hotellingBodewig.getIterationNumber();
+		results[3] = " 1st norm  : " + A.multiply(hotellingBodewig.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM);
+		results[0] = "inverse of A : \n" + hotellingBodewig.getInverseAproximation();
 		
 		
 		
@@ -77,13 +77,13 @@ public class Homework5
 		//
 		//
 		endTime = System.currentTimeMillis();
-		results[5] = (new Double((endTime - startTime))/1000 + "s");
+		results[9] = " time : " + (new Double((endTime - startTime))/1000 + "s");
 		//
 		//
-		results[6] = "converged   : " + liAndLi.hasConverged();
-		results[7] = "iteration # : " + liAndLi.getIterationNumber();
-		results[8] = "first norm  : " + A.multiply(liAndLi.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM);
-		results[9] = "inverse of A : \n" + liAndLi.getInverseAproximation();
+		results[6] = " converged : " + liAndLi.hasConverged();
+		results[7] = " iteration : " + liAndLi.getIterationNumber();
+		results[8] = " 1st norm  : " + A.multiply(liAndLi.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM);
+		results[5] = "inverse of A : \n" + liAndLi.getInverseAproximation();
 	}
 
 }

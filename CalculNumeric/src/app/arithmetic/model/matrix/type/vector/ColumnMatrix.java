@@ -183,7 +183,7 @@ public class ColumnMatrix extends AbstractMatrix implements MutableMatrix
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < super.getNumberOfRows(); i++)
 		{
-			sb.append(String.format("%40.20f", this.getEii(i)));
+			sb.append(String.format("%20.10f", this.getEii(i)));
 			sb.append("\n");
 		}
 		return sb.toString();

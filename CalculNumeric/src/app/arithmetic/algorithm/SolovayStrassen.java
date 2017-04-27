@@ -6,6 +6,7 @@ import java.util.Random;
 public class SolovayStrassen
 {
 	private static final BigInteger TWO = new BigInteger("2");
+	private static final BigInteger TEN = new BigInteger("10");
 	private JacobiSymbol jacobiSymbol;
 	int numberOfIterations;
 
@@ -17,6 +18,8 @@ public class SolovayStrassen
 	
 	public boolean isPrime(BigInteger n)
 	{
+		if(n.mod(TEN).intValue() % 2 == 0)
+			return false;
 		BigInteger a, r, s, nMinusOne, nMinusTwo, nMinusOneDivideByTwo;
 		nMinusOne = n.subtract(BigInteger.ONE);
 		nMinusTwo = n.subtract(TWO);
@@ -38,7 +41,7 @@ public class SolovayStrassen
 		}
 		return true;
 	}
-	
+
 	private BigInteger generateRandom(Random random, BigInteger lowerBound, BigInteger upperBound)
 	{
 		int nlen = upperBound.bitLength();

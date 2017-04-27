@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -23,8 +25,9 @@ import app.gui.services.Homework1;
 import app.gui.services.Homework2;
 import app.gui.services.Homework3;
 import app.gui.services.Homework4;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import app.gui.services.Homework5;
+import app.gui.services.Homework6;
+import javax.swing.ScrollPaneConstants;
 
 public class MainWindow extends JFrame
 {
@@ -34,20 +37,45 @@ public class MainWindow extends JFrame
 	private static final long serialVersionUID = 1L;
 	private JTextPane textPane_1;
 	private JTextPane textPane_3;
-	private String stringMatrices;
-	// Tab 4
+	// ************ Tab 4
 	private JTextPane textPane_41, textPane_42, textPane_43, textPane_44;
 	private JTextPane textPane_t41, textPane_t42, textPane_t43, textPane_t44;
 	private JTextPane textPane_n41, textPane_n42, textPane_n43, textPane_n44;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	// ************ Tab 5
+	private JTextPane textPane_h5_1, textPane_h5_2;
+	private JTextField textField_11, textField_12, textField_13, textField_14;
+	private JTextField textField_21, textField_22, textField_23, textField_24;
+	private JTextField txtDimension;
+	private JTextField txtHotellingBodewig;
+	private JTextField txtLiAndLi;
+	//
+	private JTextPane textArea, textArea_1, textArea_2, textArea_3, textArea_4;
+	private JTextField txtEigenValuesOf;
+	private JTextField txtMatrixA;
+	private JTextField txtAsMatrix;
+	private JTextField textField_p1_1;
+	private JTextField textField_p1_2;
+	private JTextField textField_p1_3;
+	private JTextField textField_p1_7;
+	private JTextField txtCol;
+	private JTextField txtRows;
+	private JTextField txtS;
+	private JTextField textField_p1_4;
+	private JTextField textField_p1_5;
+	private JTextField textField_p1_6;
+	private JTextField txtSparseMatrices;
+	private JTextField txtDimension_1;
+	private JTextField txtSparsity;
 	private JTextField textField_4;
 	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField txtDimension;
+	private JTextField txtRandomSparseMatrix;
+	private JTextField txtFileSparseMatrix;
+	private JTextField textField_p2_1;
+	private JTextField textField_p2_2;
+	private JTextField textField_p3_1;
+	private JTextField textField_p3_2;
+	
+	
 	public MainWindow()
 	{
 		// cum as putea calcula inversa unei matrici
@@ -242,67 +270,91 @@ public class MainWindow extends JFrame
 		textPane_n44 = new JTextPane();
 		textPane_n44.setBounds(630, 394, 164, 20);
 		panel_4.add(textPane_n44);
-		
+		////////////////////////////////////////////////////////////////
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Tema 5", null, panel_5, null);
 		panel_5.setLayout(null);
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(444, 11, 350, 350);
-		panel_5.add(scrollPane_2);
+		JScrollPane scrollPane_h5_1 = new JScrollPane();
+		scrollPane_h5_1.setBounds(444, 42, 350, 319);
+		panel_5.add(scrollPane_h5_1);
 		
-		JTextPane textPane_2 = new JTextPane();
-		scrollPane_2.setViewportView(textPane_2);
+		txtHotellingBodewig = new JTextField();
+		txtHotellingBodewig.setText(" Hotelling Bodewig");
+		txtHotellingBodewig.setEditable(false);
+		txtHotellingBodewig.setBounds(94, 11, 115, 20);
+		panel_5.add(txtHotellingBodewig);
+		txtHotellingBodewig.setColumns(10);
 		
-		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(84, 11, 350, 350);
-		panel_5.add(scrollPane_4);
+		txtLiAndLi = new JTextField();
+		txtLiAndLi.setText(" Li And Li");
+		txtLiAndLi.setEditable(false);
+		txtLiAndLi.setColumns(10);
+		txtLiAndLi.setBounds(454, 11, 115, 20);
+		panel_5.add(txtLiAndLi);
+
+		textPane_h5_1 = new JTextPane();
+		textPane_h5_1.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane_h5_1.setViewportView(textPane_h5_1);
 		
-		JTextPane textPane_4 = new JTextPane();
-		scrollPane_4.setViewportView(textPane_4);
+		JScrollPane scrollPane_h5_2 = new JScrollPane();
+		scrollPane_h5_2.setBounds(84, 42, 350, 319);
+		panel_5.add(scrollPane_h5_2);
 		
-		textField = new JTextField();
-		textField.setBounds(184, 372, 250, 20);
-		panel_5.add(textField);
-		textField.setColumns(10);
+		textPane_h5_2 = new JTextPane();
+		textPane_h5_2.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane_h5_2.setViewportView(textPane_h5_2);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(94, 372, 86, 20);
-		panel_5.add(textField_1);
+		textField_11 = new JTextField();
+		textField_11.setColumns(10);
+		textField_11.setBounds(94, 372, 97, 20);
+		panel_5.add(textField_11);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(544, 372, 250, 20);
-		panel_5.add(textField_2);
+		textField_12 = new JTextField();
+		textField_12.setColumns(10);
+		textField_12.setBounds(94, 403, 97, 20);
+		panel_5.add(textField_12);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(544, 403, 250, 20);
-		panel_5.add(textField_3);
+		textField_13 = new JTextField();
+		textField_13.setBounds(201, 372, 233, 20);
+		panel_5.add(textField_13);
+		textField_13.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(454, 372, 86, 20);
-		panel_5.add(textField_4);
+		textField_14 = new JTextField();
+		textField_14.setColumns(10);
+		textField_14.setBounds(201, 403, 97, 20);
+		panel_5.add(textField_14);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(184, 403, 250, 20);
-		panel_5.add(textField_5);
+		textField_21 = new JTextField();
+		textField_21.setColumns(10);
+		textField_21.setBounds(454, 372, 97, 20);
+		panel_5.add(textField_21);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(94, 403, 86, 20);
-		panel_5.add(textField_6);
+		textField_22 = new JTextField();
+		textField_22.setColumns(10);
+		textField_22.setBounds(454, 403, 97, 20);
+		panel_5.add(textField_22);
 		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(454, 403, 86, 20);
-		panel_5.add(textField_7);
+		textField_23 = new JTextField();
+		textField_23.setColumns(10);
+		textField_23.setBounds(561, 372, 233, 20);
+		panel_5.add(textField_23);
+		
+		textField_24 = new JTextField();
+		textField_24.setColumns(10);
+		textField_24.setBounds(561, 403, 97, 20);
+		panel_5.add(textField_24);
 		
 		JButton btnNewButton = new JButton("Run");
 		btnNewButton.setBounds(10, 104, 64, 23);
+		btnNewButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				MainWindow.this.setHomework5Dimension();
+				MainWindow.this.updateHomework5Display();
+			}
+		});
 		panel_5.add(btnNewButton);
 		
 		txtDimension = new JTextField();
@@ -311,6 +363,215 @@ public class MainWindow extends JFrame
 		panel_5.add(txtDimension);
 		txtDimension.setColumns(10);
 		
+		////////////////////////////////////////////////////////////////
+		
+		JPanel panel_6 = new JPanel();
+		tabbedPane.addTab("Tema 6", null, panel_6, null);
+		panel_6.setLayout(null);
+		
+		txtMatrixA = new JTextField();
+		txtMatrixA.setEditable(false);
+		txtMatrixA.setText(" Matrix A");
+		txtMatrixA.setBounds(119, 11, 65, 20);
+		panel_6.add(txtMatrixA);
+		txtMatrixA.setColumns(10);
+		
+		txtEigenValuesOf = new JTextField();
+		txtEigenValuesOf.setText(" Eigen Values : ");
+		txtEigenValuesOf.setEditable(false);
+		txtEigenValuesOf.setBounds(10, 69, 86, 20);
+		panel_6.add(txtEigenValuesOf);
+		txtEigenValuesOf.setColumns(10);
+		
+		JScrollPane scrollPane_h6_p11 = new JScrollPane();
+		scrollPane_h6_p11.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane_h6_p11.setBounds(10, 100, 125, 252);
+		panel_6.add(scrollPane_h6_p11);
+		
+		textArea = new JTextPane();
+		textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane_h6_p11.setViewportView(textArea);
+		
+		textField_p1_1 = new JTextField();
+		textField_p1_1.setBounds(10, 363, 125, 20);
+		panel_6.add(textField_p1_1);
+		textField_p1_1.setColumns(10);
+		
+		textField_p1_2 = new JTextField();
+		textField_p1_2.setBounds(10, 394, 125, 20);
+		panel_6.add(textField_p1_2);
+		textField_p1_2.setColumns(10);
+		
+		textField_p1_3 = new JTextField();
+		textField_p1_3.setBounds(10, 425, 125, 20);
+		panel_6.add(textField_p1_3);
+		textField_p1_3.setColumns(10);
+		
+		txtCol = new JTextField();
+		txtCol.setEditable(false);
+		txtCol.setText("C");
+		txtCol.setBounds(145, 103, 29, 20);
+		panel_6.add(txtCol);
+		txtCol.setColumns(10);
+		
+		txtRows = new JTextField();
+		txtRows.setEditable(false);
+		txtRows.setText("R");
+		txtRows.setBounds(145, 134, 29, 20);
+		panel_6.add(txtRows);
+		txtRows.setColumns(10);
+		
+		txtS = new JTextField();
+		txtS.setEditable(false);
+		txtS.setText("s");
+		txtS.setBounds(145, 165, 29, 20);
+		panel_6.add(txtS);
+		txtS.setColumns(10);
+		
+		textField_p1_4 = new JTextField();
+		textField_p1_4.setText("7");
+		textField_p1_4.setBounds(184, 103, 86, 20);
+		panel_6.add(textField_p1_4);
+		textField_p1_4.setColumns(10);
+		
+		textField_p1_5 = new JTextField();
+		textField_p1_5.setText("5");
+		textField_p1_5.setBounds(184, 134, 86, 20);
+		panel_6.add(textField_p1_5);
+		textField_p1_5.setColumns(10);
+		
+		textField_p1_6 = new JTextField();
+		textField_p1_6.setText("5");
+		textField_p1_6.setBounds(184, 165, 86, 20);
+		panel_6.add(textField_p1_6);
+		textField_p1_6.setColumns(10);
+		
+		txtAsMatrix = new JTextField();
+		txtAsMatrix.setText("As matrix : ");
+		txtAsMatrix.setEditable(false);
+		txtAsMatrix.setColumns(10);
+		txtAsMatrix.setBounds(145, 227, 65, 20);
+		panel_6.add(txtAsMatrix);
+		
+		JScrollPane scrollPane_h6_p12 = new JScrollPane();
+		scrollPane_h6_p12.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane_h6_p12.setBounds(145, 258, 170, 160);
+		panel_6.add(scrollPane_h6_p12);
+		
+		textArea_1 = new JTextPane();
+		textArea_1.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane_h6_p12.setViewportView(textArea_1);
+		
+		textField_p1_7 = new JTextField();
+		textField_p1_7.setColumns(10);
+		textField_p1_7.setBounds(145, 425, 125, 20);
+		panel_6.add(textField_p1_7);
+		
+		txtSparseMatrices = new JTextField();
+		txtSparseMatrices.setEditable(false);
+		txtSparseMatrices.setText(" Sparse Matrices");
+		txtSparseMatrices.setBounds(541, 11, 117, 20);
+		panel_6.add(txtSparseMatrices);
+		txtSparseMatrices.setColumns(10);
+		
+		txtFileSparseMatrix = new JTextField();
+		txtFileSparseMatrix.setText(" File Sparse Matrix");
+		txtFileSparseMatrix.setEditable(false);
+		txtFileSparseMatrix.setColumns(10);
+		txtFileSparseMatrix.setBounds(370, 69, 125, 20);
+		panel_6.add(txtFileSparseMatrix);
+		
+		textField_p2_1 = new JTextField();
+		textField_p2_1.setColumns(10);
+		textField_p2_1.setBounds(359, 103, 151, 20);
+		panel_6.add(textField_p2_1);
+		
+		JScrollPane scrollPane_h6_p2 = new JScrollPane();
+		scrollPane_h6_p2.setBounds(359, 134, 151, 284);
+		panel_6.add(scrollPane_h6_p2);
+		
+		textArea_3 = new JTextPane();
+		textArea_3.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane_h6_p2.setViewportView(textArea_3);
+		
+		textField_p2_2 = new JTextField();
+		textField_p2_2.setColumns(10);
+		textField_p2_2.setBounds(359, 425, 86, 20);
+		panel_6.add(textField_p2_2);
+		
+		txtRandomSparseMatrix = new JTextField();
+		txtRandomSparseMatrix.setEditable(false);
+		txtRandomSparseMatrix.setText(" Random Sparse Matrix");
+		txtRandomSparseMatrix.setBounds(601, 69, 153, 20);
+		panel_6.add(txtRandomSparseMatrix);
+		txtRandomSparseMatrix.setColumns(10);
+		
+		txtDimension_1 = new JTextField();
+		txtDimension_1.setEditable(false);
+		txtDimension_1.setText(" Dimension");
+		txtDimension_1.setBounds(579, 100, 79, 20);
+		panel_6.add(txtDimension_1);
+		txtDimension_1.setColumns(10);
+		
+		txtSparsity = new JTextField();
+		txtSparsity.setEditable(false);
+		txtSparsity.setText(" Sparsity");
+		txtSparsity.setColumns(10);
+		txtSparsity.setBounds(579, 134, 79, 20);
+		panel_6.add(txtSparsity);
+		
+		textField_4 = new JTextField();
+		textField_4.setText("500");
+		textField_4.setBounds(668, 100, 86, 20);
+		panel_6.add(textField_4);
+		textField_4.setColumns(10);
+		
+		textField_5 = new JTextField();
+		textField_5.setText("0.015");
+		textField_5.setBounds(668, 134, 86, 20);
+		panel_6.add(textField_5);
+		textField_5.setColumns(10);
+		
+		JScrollPane scrollPane_h6_p31 = new JScrollPane();
+		scrollPane_h6_p31.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane_h6_p31.setBounds(541, 162, 253, 81);
+		panel_6.add(scrollPane_h6_p31);
+		
+		textArea_2 = new JTextPane();
+		textArea_2.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane_h6_p31.setViewportView(textArea_2);
+		
+		textField_p3_1 = new JTextField();
+		textField_p3_1.setColumns(10);
+		textField_p3_1.setBounds(601, 258, 151, 20);
+		panel_6.add(textField_p3_1);
+		
+		JScrollPane scrollPane_h6_p32 = new JScrollPane();
+		scrollPane_h6_p32.setBounds(603, 289, 151, 129);
+		panel_6.add(scrollPane_h6_p32);
+		
+		textArea_4 = new JTextPane();
+		textArea_4.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane_h6_p32.setViewportView(textArea_4);
+		
+		textField_p3_2 = new JTextField();
+		textField_p3_2.setColumns(10);
+		textField_p3_2.setBounds(601, 425, 86, 20);
+		panel_6.add(textField_p3_2);
+		
+		JButton btnNewButton_3 = new JButton("Run");
+		btnNewButton_3.setBounds(318, 10, 89, 23);
+		btnNewButton_3.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				MainWindow.this.setUpHomework6();
+				MainWindow.this.updateHomework6Display();
+			}
+		});
+		panel_6.add(btnNewButton_3);
+		
+
 		////////////////////////////////////////////////////////////////
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -332,7 +593,6 @@ public class MainWindow extends JFrame
 	
 	private void updateHomework2Display()
 	{
-		Homework2.setStringMatrices(stringMatrices);
 		Homework2.execute();
 		textPane_1.setText(Homework2.getResults()[0]);
 	}
@@ -346,6 +606,7 @@ public class MainWindow extends JFrame
 	private void updateHomework4Display()
 	{
 		Homework4.execute();
+		
 		textPane_41.setText(Homework4.getResults()[0]);
 		textPane_n41.setText(Homework4.getResults()[1]);
 		textPane_t41.setText(Homework4.getResults()[2]);
@@ -363,10 +624,73 @@ public class MainWindow extends JFrame
 		textPane_t44.setText(Homework4.getResults()[11]);
 	}
 	
-	public void setStringMatrices(String stringMatrices)
+	private void updateHomework5Display()
 	{
-		this.stringMatrices = stringMatrices;
+		Homework5.execute();
+		
+		textPane_h5_1.setText(Homework5.getResults()[0]);
+		textField_11.setText(Homework5.getResults()[1]);
+		textField_12.setText(Homework5.getResults()[2]);
+		textField_13.setText(Homework5.getResults()[3]);
+		textField_14.setText(Homework5.getResults()[4]);
+		
+		textPane_h5_2.setText(Homework5.getResults()[5]);
+		textField_21.setText(Homework5.getResults()[6]);
+		textField_22.setText(Homework5.getResults()[7]);
+		textField_23.setText(Homework5.getResults()[8]);
+		textField_24.setText(Homework5.getResults()[9]);
+		
 	}
+	
+	public void setHomework5Dimension()
+	{
+		int dimension = Integer.valueOf(txtDimension.getText());
+		if(dimension > 41)
+			Homework5.setDimension(40);
+		else
+			Homework5.setDimension(dimension);
+	}
+	
+	private void updateHomework6Display()
+	{
+		Homework6.execute();
+		
+		textArea.setText(Homework6.getResults()[0]);
+		textField_p1_1.setText(Homework6.getResults()[1]);
+		textField_p1_2.setText(Homework6.getResults()[2]);
+		textField_p1_3.setText(Homework6.getResults()[3]);
+
+		textArea_1.setText(Homework6.getResults()[4]);
+		textField_p1_7.setText(Homework6.getResults()[5]);
+
+		textField_p2_1.setText(Homework6.getResults()[6]);
+		textArea_3.setText(Homework6.getResults()[7]);
+		textField_p2_2.setText(Homework6.getResults()[8]);
+		
+		textArea_2.setText(Homework6.getResults()[9]);
+		textField_p3_1.setText(Homework6.getResults()[10]);
+		textArea_4.setText(Homework6.getResults()[11]);
+		textField_p3_2.setText(Homework6.getResults()[12]);
+		
+	}
+	
+	public void setUpHomework6()
+	{
+		int    randomSparseMatrixDimension = Integer.valueOf(textField_4.getText());
+		double randomSparseMatrixSparsity  = Double.valueOf(textField_5.getText());
+		
+		int numberOfColumns = Integer.valueOf(textField_p1_4.getText()); // p
+		int numberOfRows    = Integer.valueOf(textField_p1_5.getText());    // n
+		int s = Integer.valueOf(textField_p1_6.getText());
+
+		Homework6.setValues(numberOfRows, numberOfColumns, s, randomSparseMatrixSparsity, randomSparseMatrixDimension);
+	}
+	
+	public void setHomework2StringMatrices(String stringMatrices)
+	{
+		Homework2.setStringMatrices(stringMatrices);
+	}
+	
 	public static void main(String[] args)
 	{
 		MainWindow mw = new MainWindow();

@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 
 public class EpsilonPrecision
 {
-	private static int exponent = 18;
+	private static int exponent = 18; // 18 for today
 	private BigDecimal epsilon;
 	private MathContext mc;
 	

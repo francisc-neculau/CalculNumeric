@@ -76,7 +76,7 @@ public class BiConjugateGradientStabilized
 			alpha = rho.divide(r0.transposeMultiplyToNumber(v), precision, roundingMode);
 			
 			// ********************* Step 6 - 7
-			// Quit Test
+			// Quit Test should be here
 			
 			// ********************* Step 8
 			s = rPrevious.subtract(v.multiply(alpha));
@@ -91,7 +91,7 @@ public class BiConjugateGradientStabilized
 			x = xPrevious.add(p.multiply(alpha)).add(s.multiply(omega));
 			
 			// ********************* Step 12
-			// Quit Test
+			// Quit Test should be here
 			
 			// ********************* Step 13
 			r = s.subtract(t.multiply(omega));

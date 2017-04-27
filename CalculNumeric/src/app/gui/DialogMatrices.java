@@ -26,7 +26,7 @@ public class DialogMatrices extends JDialog
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				DialogMatrices.this.mainWindow.setStringMatrices(DialogMatrices.this.textPane.getText());
+				DialogMatrices.this.mainWindow.setHomework2StringMatrices(DialogMatrices.this.textPane.getText());
 				DialogMatrices.this.dispose();
 			}
 		});

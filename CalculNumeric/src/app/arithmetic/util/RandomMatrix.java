@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import app.arithmetic.model.matrix.type.square.DenseSquareMatrix;
 import app.arithmetic.model.matrix.type.square.SquareMatrix;
 import app.arithmetic.model.matrix.type.square.sparse.IndexedElement;
 import app.arithmetic.model.matrix.type.square.sparse.SparseMatrix;
@@ -20,6 +21,11 @@ public class RandomMatrix
 		this.seed = seed;
 		this.random = new Random(seed);
 	}
+	
+	// fixme : this should be more customed 
+	// diagonal elements
+	// negative elements
+	// bound values for the element values
 	
 	public SquareMatrix nextSymmetricSparseMatrix(int dimension, double sparsity)
 	{
@@ -56,6 +62,23 @@ public class RandomMatrix
 		} while(elements.size() < maxNumberOfElements);
 		
 		matrix = new SparseMatrix(dimension, elements);
+
+		return matrix;
+	}
+	
+	public SquareMatrix nextSymmetricDenseMatrix(int dimension)
+	{
+		BigDecimal[][] elements = new BigDecimal[dimension][dimension];
+		SquareMatrix matrix;
+		
+		BigInteger lowerBound = BigInteger.ONE;
+		BigInteger upperBound = new BigInteger(new Integer(dimension).toString());
+		
+		for (int i = 0; i < dimension; i++)
+			for (int j = 0; j < elements.length; j++)
+				elements[i][j] = new BigDecimal(RandomNumbers.nextBigInteger(random, lowerBound, upperBound));
+		
+		matrix = new DenseSquareMatrix(dimension, elements);
 
 		return matrix;
 	}

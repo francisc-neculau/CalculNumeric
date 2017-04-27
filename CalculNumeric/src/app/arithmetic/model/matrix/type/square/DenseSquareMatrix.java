@@ -211,7 +211,15 @@ public class DenseSquareMatrix extends SquareMatrix
 
 	@Override
 	public double[][] doubleValue()
-	{return null;}
+	{
+		double[][] elements = new double[super.dimension][super.dimension];
+
+		for (int i = 0; i < super.dimension; i++)
+			for (int j = 0; j < super.dimension; j++)
+				elements[i][j] = this.elements[i][j].doubleValue();
+
+		return elements;
+	}
 
 	@Override
 	public BigDecimal determinant()

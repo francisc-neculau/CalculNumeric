@@ -67,7 +67,7 @@ public class MainActn
 
 		long startTime, endTime;
 		
-		int n  = 1279;
+		int n  = 1279; // 1279
 		BigInteger Mn = (new BigInteger("2")).pow(n).subtract(BigInteger.ONE);
 
 		SolovayStrassen solovayStrassen = new SolovayStrassen(64);

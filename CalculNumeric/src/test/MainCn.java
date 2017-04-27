@@ -1,15 +1,13 @@
 package test;
 
-import java.math.BigDecimal;
-
 import org.apache.log4j.BasicConfigurator;
 
-import app.arithmetic.algorithm.HotellingBodewig;
-import app.arithmetic.algorithm.LiAndLi;
+import app.arithmetic.algorithm.PowerIteration;
 import app.arithmetic.model.matrix.Matrix;
-import app.arithmetic.model.matrix.NormType;
-import app.arithmetic.model.matrix.type.square.DenseSquareMatrix;
 import app.arithmetic.model.matrix.type.square.SquareMatrix;
+import app.arithmetic.model.matrix.type.square.sparse.SparseMatrix;
+import app.arithmetic.util.RandomMatrix;
+import app.arithmetic.util.SparseMatrixReader;
 
 public class MainCn
 {
@@ -20,55 +18,108 @@ public class MainCn
 		long startTime, endTime;
 
 		
-		int dimension = 40; // 36 is max for HotellingBodewig | 30 for the other
-		Double[][] elements = new Double[dimension][dimension];
-		for (int i = 0; i < dimension; i++)
-			for (int j = 0; j < dimension; j++)
-				elements[i][j] = 0.0;
-		for (int i = 0; i < dimension - 1; i++)
-		{
-			elements[i][i] = 1.0;
-			elements[i][i + 1] = 2.0;
-		}
-		elements[dimension - 1][dimension - 1] = 1.0;
-
-		Matrix A = new DenseSquareMatrix(dimension, elements);		
-		
-// 		System.out.println(A.addDiagonal(BigDecimal.ONE).addDiagonal(BigDecimal.ONE).multiply(BigDecimal.ONE.negate()));
-		
-		HotellingBodewig hotellingBodewig = new HotellingBodewig(1000);
-		hotellingBodewig.execute((SquareMatrix)A);
-		System.out.println("converged   : " + hotellingBodewig.hasConverged());
-		System.out.println("iteration # : " + hotellingBodewig.getIterationNumber());
-		System.out.println("first norm  : " + A.multiply(hotellingBodewig.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM));
-		System.out.println("inverse of A : \n" + hotellingBodewig.getInverseAproximation());
-		
-		LiAndLi liAndLi = new LiAndLi(1000);
-		liAndLi.execute((SquareMatrix)A);
-		System.out.println("converged   : " + liAndLi.hasConverged());
-		System.out.println("iteration # : " + liAndLi.getIterationNumber());
-		System.out.println("first norm  : " + A.multiply(liAndLi.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM));
-		System.out.println("inverse of A : \n" + liAndLi.getInverseAproximation());
 		
 		
-//		SparseMatrixReader reader = new SparseMatrixReader("resources/homework6/m_rar_sim_2017.txt");
-//		RandomMatrix random = new RandomMatrix(System.currentTimeMillis());
-//		
-//		Matrix randomMatrix, fileMatrix;
-//		
-//		randomMatrix = random.nextSymmetricSparseMatrix(500, 0.015);
-//		fileMatrix   = new SparseMatrix(reader.getDimension(), reader.getElements());
-//		
-//		PowerIteration powerIteration = new PowerIteration(500);
-//		
+		
+		SparseMatrixReader reader = new SparseMatrixReader("resources/homework6/m_rar_sim_2017.txt");
+		RandomMatrix random = new RandomMatrix(System.currentTimeMillis());
+		
+		Matrix randomMatrix, fileMatrix;
+		
+		randomMatrix = random.nextSymmetricSparseMatrix(50, 0.15);
+		fileMatrix   = new SparseMatrix(reader.getDimension(), reader.getElements());
+		
+		PowerIteration powerIteration = new PowerIteration(500);
+		
 //		powerIteration.execute((SquareMatrix)fileMatrix);
 //		System.out.println(powerIteration.getEigenValue());
+//		System.out.println(powerIteration.getEigenVector());
+		
+		powerIteration.execute((SquareMatrix)randomMatrix);
+		System.out.println(powerIteration.getEigenValue());
+		System.out.println(powerIteration.getEigenVector());
+		System.out.println(randomMatrix.multiply(powerIteration.getEigenVector()));
+		System.out.println(powerIteration.getEigenVector().multiply(powerIteration.getEigenValue()));
+		
+//		int numberOfRows = 5;    // n
+//		int numberOfColumns = 7; // p
+//
+//		Random r = new Random(System.currentTimeMillis());
+//		BigInteger lowerBound = BigInteger.ONE;
+//		BigInteger upperBound = new BigInteger(new Integer(numberOfColumns).toString());
 //		
-//		powerIteration.execute((SquareMatrix)randomMatrix);
-//		System.out.println(powerIteration.getEigenValue());
+//		double[][] elements = new double[numberOfRows][numberOfColumns];
+//		for (int i = 0; i < numberOfRows; i++)
+//			for (int j = 0; j < numberOfColumns; j++)
+//				elements[i][j] = new BigDecimal(RandomNumbers.nextBigInteger(r, lowerBound, upperBound)).doubleValue();
+//		
+//		Jama.Matrix A = new Jama.Matrix(elements);
+//		SingularValueDecomposition svd = new SingularValueDecomposition(A);
+//
+//		double [] eigenvalues = svd.getSingularValues();
+//		
+//		System.out.println("eigenvalues : ");
+//		for (int i = 0; i < eigenvalues.length - 1; i++)
+//			System.out.print(eigenvalues[i] + " ");
+//		System.out.println();
+//		System.out.println("rank : " + svd.rank());
+//		System.out.println("condition number : " + svd.cond());
+//		System.out.println("norm : " + svd.norm2());
+//		
+//		Jama.Matrix As, ui, vi; 
+//		
+//		ui = svd.getU().getMatrix(0, numberOfRows - 1, 0, 0);
+//		vi = svd.getV().getMatrix(0, numberOfColumns - 1, 0, 0);
+//		As = ui.times(vi.transpose()).times(eigenvalues[4]);
+//
+//		for (int i = 1; i < 5; i++) // max is the number of rows
+//		{
+//			ui = svd.getU().getMatrix(0, numberOfRows - 1, i, i);
+//			vi = svd.getV().getMatrix(0, numberOfColumns - 1, i, i);
+//			As = As.plus(ui.times(vi.transpose()).times(eigenvalues[4 - i]));
+//		}
+//		System.out.println(As.minus(A).norm2());
 		
 		
 		
+		
+		
+		
+//		int dimension = 100; // 36 is max for HotellingBodewig | 30 for the other
+//		Double[][] elements = new Double[dimension][dimension];
+//		for (int i = 0; i < dimension; i++)
+//			for (int j = 0; j < dimension; j++)
+//				elements[i][j] = 0.0;
+//		for (int i = 0; i < dimension - 1; i++)
+//		{
+//			elements[i][i] = 1.0;
+//			elements[i][i + 1] = 2.0;
+//		}
+//		elements[dimension - 1][dimension - 1] = 1.0;
+//
+//		Matrix A = new DenseSquareMatrix(dimension, elements);		
+//		
+//// 		System.out.println(A.addDiagonal(BigDecimal.ONE).addDiagonal(BigDecimal.ONE).multiply(BigDecimal.ONE.negate()));
+//		
+//		HotellingBodewig hotellingBodewig = new HotellingBodewig(1000);
+//		hotellingBodewig.execute((SquareMatrix)A);
+//		System.out.println("converged   : " + hotellingBodewig.hasConverged());
+//		System.out.println("iteration # : " + hotellingBodewig.getIterationNumber());
+////		System.out.println(A.multiply(hotellingBodewig.getInverseAproximation()));
+////		System.out.println(A.multiply(hotellingBodewig.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()));
+//		System.out.println("first norm  : " + A.multiply(hotellingBodewig.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM));
+//		System.out.println("inverse of A : \n" + hotellingBodewig.getInverseAproximation());
+//		
+//		LiAndLi liAndLi = new LiAndLi(1000);
+//		liAndLi.execute((SquareMatrix)A);
+//		System.out.println("converged   : " + liAndLi.hasConverged());
+//		System.out.println("iteration # : " + liAndLi.getIterationNumber());
+//		System.out.println("first norm  : " + A.multiply(liAndLi.getInverseAproximation()).addDiagonal(BigDecimal.ONE.negate()).norm(NormType.MAXIMUM));
+//		System.out.println("inverse of A : \n" + liAndLi.getInverseAproximation());
+		
+
+
+
 		
 		
 //		//SparseMatrixFileReader reader = new SparseMatrixFileReader("resources/homework4/bicgstab.txt");
@@ -77,20 +128,6 @@ public class MainCn
 //		SparseMatrix A = new SparseMatrix(reader.getDimension(), reader.getElements());
 //		ColumnMatrix B = new ColumnMatrix(reader.getDimension(), reader.getBelements());
 //		
-//		//
-//		//
-//		startTime = System.currentTimeMillis();
-//		//
-//		//
-//		BiConjugateGradientStabilized bicgstab = new BiConjugateGradientStabilized();
-//		bicgstab.solve(A, B);
-//		System.out.println(bicgstab.getX());
-//		//
-//		//
-//		endTime = System.currentTimeMillis();
-//		System.out.println("BiConjugateGradientStabilized - time : " + new Double((endTime - startTime))/1000 + "s");
-//		//
-//		//
 //		//
 //		//
 //		startTime = System.currentTimeMillis();
@@ -105,9 +142,21 @@ public class MainCn
 //		System.out.println("GaussSeidel - time : " + new Double((endTime - startTime))/1000 + "s");
 //		//
 //		//
-		
-		
-		
+//		//
+//		//
+//		startTime = System.currentTimeMillis();
+//		//
+//		//
+//		BiConjugateGradientStabilized bicgstab = new BiConjugateGradientStabilized();
+//		bicgstab.solve(A, B);
+//		System.out.println(bicgstab.getX());
+//		//
+//		//
+//		endTime = System.currentTimeMillis();
+//		System.out.println("BiConjugateGradientStabilized - time : " + new Double((endTime - startTime))/1000 + "s");
+//		//
+//		//
+
 		
 		
 		

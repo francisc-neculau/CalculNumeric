@@ -6,10 +6,11 @@ public class LucasLehmer
 {
 	private static final BigInteger TWO  = new BigInteger("2");
 	private static final BigInteger FOUR = new BigInteger("4");
+	private SolovayStrassen ss;
 
 	public LucasLehmer()
 	{
-		
+		this.ss = new SolovayStrassen(64);
 	}
 	
 	/**
@@ -20,6 +21,9 @@ public class LucasLehmer
 	 */
 	public boolean isPrime(BigInteger Mn, int n)
 	{
+		if(!ss.isPrime(new BigInteger(Integer.valueOf(n).toString())))
+			return false;
+
 		BigInteger Sn = FOUR;
 		
 		for (int i = 2; i < n; i++)
@@ -42,6 +46,9 @@ public class LucasLehmer
 	 */
 	public boolean isPrime(int n)
 	{
+		if(!ss.isPrime(new BigInteger(Integer.valueOf(n).toString())))
+			return false;
+
 		BigInteger Mn = TWO.pow(n).subtract(BigInteger.ONE);
 		BigInteger Sn = FOUR;
 		
@@ -64,6 +71,9 @@ public class LucasLehmer
 	 */
 	public boolean isPrimeSlow(BigInteger Mn, int n)
 	{
+		if(!ss.isPrime(new BigInteger(Integer.valueOf(n).toString())))
+			return false;
+
 		BigInteger Sn = FOUR;
 		
 		for (int i = 2; i < n; i++)
