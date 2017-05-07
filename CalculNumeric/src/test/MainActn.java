@@ -1,15 +1,110 @@
 package test;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.Random;
 
-import app.arithmetic.algorithm.LucasLehmer;
+import app.arithmetic.algorithm.BabyStepGianStep;
 import app.arithmetic.algorithm.SolovayStrassen;
+import app.arithmetic.util.RandomNumbers;
 
 public class MainActn
 {
+	private static final BigInteger TWO = new BigInteger("2");
 
 	public static void main(String[] args)
 	{
+		
+		
+		/*
+		 * I. Generate a prime p = 2q + 1 where q is also prime.
+		 */
+		SolovayStrassen solovayStrassen = new SolovayStrassen(64);
+		
+		int numberOfBits = 16;
+		
+		BigInteger p = BigInteger.probablePrime(numberOfBits, new Random(System.currentTimeMillis()));
+		BigInteger q = p.subtract(BigInteger.ONE).divide(TWO);
+		
+		boolean found = false;
+		while(!found)
+		{
+			if(solovayStrassen.isPrime(q))
+				found = true;
+			else
+				p = BigInteger.probablePrime(numberOfBits, new Random(System.currentTimeMillis()));
+				q = p.subtract(BigInteger.ONE).divide(TWO);
+		}
+		System.out.println("p = " + p.toString());
+		System.out.println("q = " + q.toString());
+		
+		
+		/*
+		 * II. Generate alpha a primitive root modulo p.
+		 */
+		/*
+		 * Because p is prime => Euler's Function phi(p) = p - 1
+		 * which means we have p - 1 multiplicative inverses
+		 * in Zp* ( |Zp*| = phi(p) = p - 1 )
+		 * 
+		 * We have in Zp* a number of phi(phi(p)) primitive 
+		 * roots modulo p.
+		 * 
+		 * Because p = 2q + 1 with p,q primes => phi(p) = 2q
+		 * phi(phi(p)) = phi(2)*phi(q)
+		 * phi(phi(p)) = (2 - 1) * ( q - 1 )
+		 * phi(phi(p)) = q - 1
+		 * 
+		 * Thus, for our particular case, Zp* has q -1 
+		 * primitive roots modulo p.
+		 * 
+		 * To check weather alpha is a primitive root modulo p
+		 * we must check, for our particular case, if :
+		 * 
+		 * 	1. alpha^(phi(p)/2) mod p != 1 
+		 *  2. alpha^(phi(p)/q) mod p != 1
+		 * 
+		 * Where phi(p)/2 = q, and phi(p)/q = 2.
+		 * 
+		 */
+		
+		BigInteger phiP = p.subtract(BigInteger.ONE);
+		
+		System.out.println("The chances to pick randomly a primitive root is " + new BigDecimal(q.subtract(BigInteger.ONE)).divide(new BigDecimal(phiP), 4, RoundingMode.HALF_DOWN));
+		
+		BigInteger alpha = RandomNumbers.nextBigInteger(new Random(System.currentTimeMillis()), TWO, phiP);
+		
+		found = false;
+		while(!found)
+		{
+			if(!alpha.modPow(q, p).equals(BigInteger.ONE) && !alpha.modPow(TWO, p).equals(BigInteger.ONE))
+				found = true;
+			else
+				alpha = RandomNumbers.nextBigInteger(new Random(System.currentTimeMillis()), TWO, phiP);
+		}
+		System.out.println("Primite root alpha is : " + alpha);
+		
+		/*
+		 * III. Use BabyStepGiantStep algorithm.
+		 */
+		BabyStepGianStep shanks = new BabyStepGianStep();
+		
+		BigInteger beta = RandomNumbers.nextBigInteger(new Random(System.currentTimeMillis()), TWO, q.subtract(BigInteger.ONE));
+		System.out.println("Beta is chosen to be : " + beta);
+		System.out.println("The discreete logarithm log base alpha from beta mod p is " + shanks.compute(alpha, beta, p));
+		
+		
+		
+		/*
+		 * IV. Use Pohlig-Hellman algorithm
+		 */
+		System.out.println(BigInteger.probablePrime(1024, new Random(System.currentTimeMillis())));
+		
+		
+		
+		
+		
 		/*
 		 * Test Jacobi Symbol 
 		 */
@@ -65,33 +160,33 @@ public class MainActn
 //		System.out.println(result);
 //		System.out.println(((194 >> 5) + (194 & 31)));
 
-		long startTime, endTime;
-		
-		int n  = 1279; // 1279
-		BigInteger Mn = (new BigInteger("2")).pow(n).subtract(BigInteger.ONE);
-
-		SolovayStrassen solovayStrassen = new SolovayStrassen(64);
-		LucasLehmer lucasLehmer = new LucasLehmer();
-		//
-		//
-		startTime = System.currentTimeMillis();
-		System.out.println(Mn + " is prime ? \n" + solovayStrassen.isPrime(Mn));
-		endTime = System.currentTimeMillis();
-		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
-		//
-		//
-		startTime = System.currentTimeMillis();
-		System.out.println(Mn + " is prime ? \n" + lucasLehmer.isPrimeSlow(Mn, n));
-		endTime = System.currentTimeMillis();
-		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
-		//
-		//
-		startTime = System.currentTimeMillis();
-		System.out.println(Mn + " is prime ? \n" + lucasLehmer.isPrime(Mn, n));
-		endTime = System.currentTimeMillis();
-		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
-		//
-		//
+//		long startTime, endTime;
+//		
+//		int n  = 1279; // 1279
+//		BigInteger Mn = (new BigInteger("2")).pow(n).subtract(BigInteger.ONE);
+//
+//		SolovayStrassen solovayStrassen = new SolovayStrassen(64);
+//		LucasLehmer lucasLehmer = new LucasLehmer();
+//		//
+//		//
+//		startTime = System.currentTimeMillis();
+//		System.out.println(Mn + " is prime ? \n" + solovayStrassen.isPrime(Mn));
+//		endTime = System.currentTimeMillis();
+//		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
+//		//
+//		//
+//		startTime = System.currentTimeMillis();
+//		System.out.println(Mn + " is prime ? \n" + lucasLehmer.isPrimeSlow(Mn, n));
+//		endTime = System.currentTimeMillis();
+//		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
+//		//
+//		//
+//		startTime = System.currentTimeMillis();
+//		System.out.println(Mn + " is prime ? \n" + lucasLehmer.isPrime(Mn, n));
+//		endTime = System.currentTimeMillis();
+//		System.out.println("time : " + new Double((endTime - startTime))/1000 + "s");
+//		//
+//		//
 		
 		
 		
